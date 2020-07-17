@@ -50,3 +50,4 @@ select trim('    a    ') from dual;
 select trim('    a  '), length('   a  ') from dual;
 -- concat : 문자열 합치기, mysql은 한 번에 된다. oracle은 concat을 한 번 씩 다 해줘야 함
 select concat(concat('a','b'),'c') from dual;
+commit;

@@ -18,4 +18,6 @@ insert into t_student (i_student,nm,age) values(10,'dddd',23);
 
 select * from t_student order by i_student desc;
 
+commit;
+
 
