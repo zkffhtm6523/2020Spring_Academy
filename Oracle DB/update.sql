@@ -6,7 +6,7 @@ update t_student set nm = ' ±èµµºó', age = age + 1 where i_student = 21;
 update t_student
 set nm = (select nm from employees where employee_id = 100)
 , age = (select employees from employees  where employee_id = 100);
--- ½ºÄ®¶ó°ª(¸®ÅÍ·²°ª°ú ºñ½Á)
+-- ½ºÄ®¶ó°ª(´ÜÀÏ °ª)
 select * from t_student;
 rollback;
 commit;

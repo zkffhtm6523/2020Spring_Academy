@@ -11,6 +11,8 @@ from employees
 group by job_id, manager_id
 having count(*) >= 5 
 order by job_id, manager_id;
+-- group by : job_id별로 합계 및 평균...
+
 -- job_id를 먼저 오름차순, 같을 시 manager_id 오름차순 등. 제일 마지막에 order by
 
 commit;
