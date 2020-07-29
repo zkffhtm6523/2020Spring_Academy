@@ -5,7 +5,7 @@ public class BoardVO {
 	private String title;
 	private String ctnt;
 	private int i_student;
-	
+	public int name;
 	public int getI_board() {
 		return i_board;
 	}
@@ -13,6 +13,7 @@ public class BoardVO {
 		this.i_board = i_board;
 	}
 	public String getTitle() {
+		name = 1;
 		return title;
 	}
 	public void setTitle(String title) {
