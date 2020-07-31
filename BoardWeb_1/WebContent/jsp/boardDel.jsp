@@ -13,8 +13,8 @@
 		alert('잘못된 접근입니다.');
 		location.href = '/jsp/boardList.jsp';
 	</script>	
-<% return;}%>
-<%
+<% return;}
+
 	String sql = " DELETE FROM t_board WHERE i_board = ? ";
 	//-----------------------------------------
 	//이 부분을 예외 안 터지게 만들어줘야함.
@@ -60,7 +60,7 @@
 	//2번 방법 : JS로 구현
 	<%if(result == 1){%>
 		alert('삭제 성공');
-	//			location.href = 'boardList.jsp';
+		location.href = 'boardList.jsp';
 	<%}else if(result == 0){%>
 		alert('삭제 실패');
 		location.href = 'boardDetail.jsp';

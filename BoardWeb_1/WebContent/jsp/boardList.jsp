@@ -86,6 +86,7 @@ th, td {
 	<div class="container">
 		<div class="title">
 			<h1>게시판 리스트</h1>
+			<a href="/jsp/boardWrite.jsp"><button>글쓰기</button></a>
 		</div>
 		<table>
 			<tr class="title2">
