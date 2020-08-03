@@ -97,7 +97,7 @@ th, td {
 	<div>
 		<form id="frm" action="/jsp/boardModProc.jsp?i_board=<%=i_board %>" method="post" onsubmit="return chk()">
 			<div><label for = "title">제목 : <input type="text" name="title" id="title" value="<%=vo1.getTitle()%>"></label></div>
-			<div><label for = "ctnt">내용: <input type="text" name="ctnt" id="ctnt" value="<%=vo1.getCtnt() %>" ></input></label></div>
+			<div><label for = "ctnt">내용: <textarea name="ctnt" id="ctnt"><%=vo1.getCtnt() %></textarea></label></div>
 			<div><label for = "i_student">작성자 : <input type="text" name="i_student" id="i_student" value="<%=vo1.getI_student()%>"></label></div>
 			<div><input type="submit" value="수정"></div>
 		</form>
