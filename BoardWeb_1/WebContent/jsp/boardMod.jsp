@@ -90,28 +90,20 @@ th, td {
 	<!-- 그래픽카드의 코어는 200개정도, 단순한 작업을 효율적으로 -->
 	<!-- 특별한 경우 아니면 parameter 앞에 final을 붙이면 속도가 빨라진다. -->
 	<!-- 내장객체들이 있다. -->
+	 <div><a href="/jsp/boardList.jsp">이전으로 가기</a></div>
 	<div>
-		<a href="/jsp/boardList.jsp">리스트로 가기</a>
 		<a href="#" onclick="procDel(<%=i_board %>)">삭제</a>
 		<!-- 무엇을 수정할 것인지 쿼리스트링 보내줘야됨 -->
-		<a href="/jsp/boardMod.jsp?i_board=<%=i_board %>&title=<%=vo1.getTitle()%>">수정</a>
+		<a href="/jsp/boardMod.jsp?i_board=<%=i_board %>">수정</a>
 	</div>
-	<table>
-			<tr class="title2">
-				<th class="col2">게시판 번호</th>
-				<th class="col2">학생 번호</th>
-				<th class="col2">제목<br>(DB)</th>
-				<th class="col2">제목<br>(Get)</th>
-				<th class="col2">내용</th>
-			</tr>
-			<tr>
-				<td><%=strI_board %> </td>
-				<td><%=vo1.getI_student() %></td>
-				<td><%=vo1.getTitle()%></td>
-				<td><%=strTitle%></td>
-				<td><%=vo1.getCtnt()%></td>
-			</tr>
-		</table>
+	<div>
+		<form id="frm" action="/jsp/boardWriteProc.jsp" method="post" onsubmit="return chk()">
+			<div><label for = "title">제목 : <input type="text" name="title" id="title" value="<%=vo1.getTitle()%>"></label></div>
+			<div><label for = "ctnt">내용: <input type="text" name="ctnt" id="ctnt" value="<%=vo1.getCtnt() %>" ></input></label></div>
+			<div><label for = "i_student">작성자 : <input type="text" name="i_student" id="i_student" value="<%=vo1.getI_student()%>"></label></div>
+			<div><input type="submit" value="글등록"></div>
+		</form>
+	</div>
 		<script>
 			function procDel(i_board){
 				alert('i_board : '+i_board);
