@@ -106,7 +106,7 @@ th, td {
 			function procDel(i_board){
 				alert('i_board : '+i_board);
 				if(confirm('삭제하시겠습니까?')){
-					location.href = '/jsp/boardDel.jsp?i_board='+i_board;
+					location.href = '/jsp/boardDel.jsp?i_board='+i_                                                                                                                                                                                                                            board;
 				}
 			}
 		</script>
