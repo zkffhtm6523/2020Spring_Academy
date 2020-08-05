@@ -1,6 +1,10 @@
 package com.koreait.board;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.koreait.board.db.BoardDAO;
+import com.koreait.board.db.DbCon;
+import com.koreait.board.vo.BoardVO;
 
 //바꿔도 됨../로 바꾸명 localhost만 해도 접속해짐
 @WebServlet("/boardList")
@@ -42,9 +50,26 @@ public class BoardListSer extends HttpServlet {
     	//주소 이동을 하고 주소값을 바꿈 , 새로고침 하는 효과가 있어서 살려서 보내지 못한다.새롭게 발행되는거 같음ㄴ
     	//-request.dispatcher : 이동
     	//주소 이동을 하고 주소값을 바꾸지 않음, 파라미터의 request, response를 jsp파일로 살려서 보낸다
-    	String strI_board = request.getParameter("i_board");
-    	System.out.println("Servlet i_board : "+strI_board);
-    	RequestDispatcher rd =  request.getRequestDispatcher("/WEB-INF/view/boardList.jsp?i_board=");
+    	
+    	List<BoardVO> list = BoardDAO.selBoardList();
+    	request.setAttribute("data", list);
+    	
+    	
+    	try {
+			Connection con = DbCon.getCon();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			
+			
+			DbCon.closeCon(con, ps);
+			DbCon.closeCon(con, ps, rs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	RequestDispatcher rd =  request.getRequestDispatcher("/WEB-INF/view/boardList.jsp");
     	//값을 jsp파일로 그대로 넘겨줄 수 있음
     	rd.forward(request, response);
     	//http://localhost:8089/boardList?i_board=3이렇게 주소값에 쳐넣으면 웹페이지에 나옴
