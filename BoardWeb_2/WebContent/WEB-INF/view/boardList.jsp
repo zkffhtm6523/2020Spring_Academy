@@ -14,38 +14,39 @@
 <head>
 <meta charset="UTF-8">
 <title>리스트</title>
+<style>
+ .itemRow:hover{
+ 	background-color: #ecf0f1;
+ 	cursor:pointer;
+ }
+</style>
 </head>
 <body>
 	<div>
 	게시판 리스트
-	<a href="/boardWrite"><button>글쓰기</button></a>
+		<a href="/boardWrite"><button>글쓰기</button></a>
 	</div>
-	<%for(int i = 0;i < BoardDAO.selBoardList().size();i++){ %>
-		<div>
-			<%=BoardDAO.selBoardList().get(i).getI_board() %>	
-			<%=BoardDAO.selBoardList().get(i).getI_student() %>	
-			<%=BoardDAO.selBoardList().get(i).getTitle() %>	
-			<%=BoardDAO.selBoardList().get(i).getCtnt() %>
-		</div>	
-	<%} %>
-	<hr>
-	<%for(BoardVO vo: BoardDAO.selBoardList()){ %>
-		<div>
-			<%=vo.getI_board() %>	
-			<%=vo.getI_student() %>	
-			<%=vo.getTitle() %>	
-			<%=vo.getCtnt() %>
-		</div>	
-	<%} %>
-	<hr>
-	<%for(BoardVO vo1: list){ %>
-		<div>
-			<%=vo1.getI_board() %>	
-			<%=vo1.getI_student() %>	
-			<%=vo1.getTitle() %>	
-			<%=vo1.getCtnt() %>
-		</div>	
-	<%} %>
-	
+	<table>
+		<tr>
+			<th>No</th>
+			<th>학생번호</th>
+			<th>제목</th>
+			<th>내용</th>
+		</tr>
+		<%for(BoardVO vo1: list){ %>
+		<tr class="itemRow" onclick="moveToDetail(<%=vo1.getI_board()%>)">
+			<td><%=vo1.getI_board() %></td>	
+			<td><%=vo1.getI_student() %></td>	
+			<td><%=vo1.getTitle() %></td>	
+			<td><%=vo1.getCtnt() %></td>
+		</tr>	
+		<%} %>
+	</table>
+	<script>
+		function moveToDetail(i_board) {
+			console.log("moveToDetail - i_board : "+i_board)
+			location.href = 'boardDetail?i_board='+i_board
+		}
+	</script>
 </body>
 </html>
