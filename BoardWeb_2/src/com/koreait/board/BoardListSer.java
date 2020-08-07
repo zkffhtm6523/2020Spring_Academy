@@ -40,7 +40,6 @@ public class BoardListSer extends HttpServlet {
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     						//요청											응답
-
     	//		삭제하고 작성
     	//    	response.getWriter().append("Served at: ").append(request.getContextPath());
     	//				        		고객에게 응답으로 감.
