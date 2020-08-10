@@ -23,10 +23,11 @@ public class BoardWriteSer extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String jsp = "/WEB-INF/view/boardList.jsp";
+//		String jsp = "/WEB-INF/view/boardList.jsp";
 		String title = request.getParameter("title");
 		String ctnt = request.getParameter("ctnt");
 		String strI_student = request.getParameter("i_student");
+		
 		int i_student = Integer.parseInt(strI_student);
 		if("".equals(title) || "".equals(ctnt) || "".equals(strI_student)){
 			response.sendRedirect("/WEB-INF/view/boardWrite.jsp?err=10");

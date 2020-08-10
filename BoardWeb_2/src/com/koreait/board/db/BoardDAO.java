@@ -73,10 +73,13 @@ public class BoardDAO {
 		String sql = " insert into t_board(i_board,title,ctnt,i_student) "
 				+" select nvl(max(i_board),0)+1,?,?,? "
 				+" from t_board " ;
-		
+//		시퀀스(시퀸스) 사용 시
+//		String sql2 = " INSERT INTO t_board "
+//				+" (i_board, title, ctnt, i_student) "
+//				+" VALUES "
+//				+" (seq_board.nextval, ?, ?, ?) ";
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
 			ps = DbCon.getCon().prepareStatement(sql);
 			System.out.println("접속 성공");
@@ -90,10 +93,12 @@ public class BoardDAO {
 			System.out.println(param.getI_student());
 			System.out.println("학생번호 삽입");
 			ps.executeUpdate();
+//			나머지는 이것 사용			
+//			ps.executeQuery(); : select만 이거 사용
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DbCon.closeCon(con, ps, rs);
+			DbCon.closeCon(con, ps);
 		}
 	}
 }
