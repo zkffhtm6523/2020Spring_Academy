@@ -23,6 +23,8 @@
 	<div class="container">
 	<h1>상세 페이지</h1>
 	<a href="/boardWrite"><button>글쓰기</button></a>
+	<button onclick="doDel(${data.i_board})">삭제</button>
+	<div class="err">${msg}</div>
 	<table>
 		<tr>
 			<th>No</th>
@@ -44,5 +46,13 @@
 		</tr>	
 	</table>
 	</div>
+	<script>
+	
+		function doDel(i_board) {
+			if(confirm('삭제하시겠습니까?')){
+				location.href='/boardDel?i_board='+i_board
+			}
+		}
+	</script>
 </body>
 </html>

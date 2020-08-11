@@ -39,9 +39,16 @@ public class BoardWriteSer extends HttpServlet {
 		param.setTitle(title);
 		param.setI_student(i_student);
 		
-		BoardDAO.selBoardWrite(param);
+		int result = BoardDAO.selBoardWrite(param);
 		
-		response.sendRedirect("/boardList");
+		if(result == 1) {
+			response.sendRedirect("/boardList");
+		}else {
+			request.setAttribute("msg", "에러가 발생하였습니다.");
+			doGet(request, response);
+		}
+		
+		
 		
 	}
 

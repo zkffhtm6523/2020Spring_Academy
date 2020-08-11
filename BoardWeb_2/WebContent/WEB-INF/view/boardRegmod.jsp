@@ -39,35 +39,31 @@ th, td {
 </style>
 </head>
 <body>
-	<div><a href="/jsp/boardList.jsp">이전으로 가기</a></div>
-	<div>
-	</div>
-	<div>
-		<form id="frm" action="/boardWrite" method="post" onsubmit="return chk()">
-			<div><label for = "title">제목 : <input type="text" name="title" id="title"></label></div>
-			<div><label for = "ctnt">내용: <textarea name="ctnt" id="ctnt"></textarea></label></div>
-			<div><label for = "i_student">작성자 : <input type="text" name="i_student" id="i_student"></label></div>
-			<div><input type="submit" value="글쓰기"></div>
-		</form>
-	</div>
-		<script>
-			function eleValid(ele,nm){
-				if(ele.value.length == 0){
-					alert(nm+'을(를) 입력해주세요.')
-					ele.focus()
-					return true
-				}
+	<div><a href="/boardList">이전으로 가기</a></div>
+	<div class="err">${msg}</div>
+	<form id="frm" action="/boardWrite" method="post" onsubmit="return chk()">
+		<div><label for = "title">제목 : <input type="text" name="title" id="title"></label></div>
+		<div><label for = "ctnt">내용: <textarea name="ctnt" id="ctnt"></textarea></label></div>
+		<div><label for = "i_student">작성자 : <input type="text" name="i_student" id="i_student"></label></div>
+		<div><input type="submit" value="글쓰기"></div>
+	</form>
+	<script>
+		function eleValid(ele,nm){
+			if(ele.value.length == 0){
+				alert(nm+'을(를) 입력해주세요.')
+				ele.focus()
+				return true
 			}
-			
-			function chk(){
-				if(eleValid(frm.title,'제목')){
-					return false
-				}else if(eleValid(frm.ctnt,'내용')){
-					return false
-				}else if(eleValid(frm.i_student,'작성자')){
-					return false
-				}
+		}
+		function chk(){
+			if(eleValid(frm.title,'제목')){
+				return false
+			}else if(eleValid(frm.ctnt,'내용')){
+				return false
+			}else if(eleValid(frm.i_student,'작성자')){
+				return false
 			}
-		</script>
+		}
+	</script>
 </body>
 </html>

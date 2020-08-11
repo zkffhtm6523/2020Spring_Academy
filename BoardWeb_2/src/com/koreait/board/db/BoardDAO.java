@@ -69,7 +69,7 @@ public class BoardDAO {
 		}
 		return vo;
 	}
-	public static void selBoardWrite(BoardVO param){
+	public static int selBoardWrite(BoardVO param){
 		String sql = " insert into t_board(i_board,title,ctnt,i_student) "
 				+" select nvl(max(i_board),0)+1,?,?,? "
 				+" from t_board " ;
@@ -80,19 +80,17 @@ public class BoardDAO {
 //				+" (seq_board.nextval, ?, ?, ?) ";
 		Connection con = null;
 		PreparedStatement ps = null;
+		int result = 0;
 		try {
 			ps = DbCon.getCon().prepareStatement(sql);
 			System.out.println("접속 성공");
 			ps.setNString(1, param.getTitle());
-			System.out.println(param.getTitle());
 			System.out.println("타이틀 삽입");
 			ps.setNString(2, param.getCtnt());
-			System.out.println(param.getCtnt());
 			System.out.println("내용 삽입");
 			ps.setInt(3, param.getI_student());
-			System.out.println(param.getI_student());
 			System.out.println("학생번호 삽입");
-			ps.executeUpdate();
+			result = ps.executeUpdate();
 //			나머지는 이것 사용			
 //			ps.executeQuery(); : select만 이거 사용
 		}catch (Exception e) {
@@ -100,5 +98,23 @@ public class BoardDAO {
 		}finally {
 			DbCon.closeCon(con, ps);
 		}
+		return result;
+	}
+	public static int delBoard(BoardVO param) {
+		String sql = " delete from t_board where i_board = ? ";
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+		
+		try {
+			ps = DbCon.getCon().prepareStatement(sql);
+			ps.setInt(1, param.getI_board());
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbCon.closeCon(con, ps);
+		}
+		return result;
 	}
 }
