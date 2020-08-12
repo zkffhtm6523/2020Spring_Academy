@@ -117,4 +117,26 @@ public class BoardDAO {
 		}
 		return result;
 	}
+	public static int upBoard(BoardVO param) {
+		String sql = " update t_board set title = ?, ctnt = ?, i_student = ? where i_board = ?";
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+		
+		try {
+			ps = DbCon.getCon().prepareStatement(sql);
+			ps.setNString(1, param.getTitle());
+			ps.setNString(2, param.getCtnt());
+			ps.setInt(3, param.getI_student());
+			ps.setInt(4, param.getI_board());
+			System.out.println("수정 등록 완료");
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbCon.closeCon(con, ps);
+		}
+		
+		return result;
+	}
 }
