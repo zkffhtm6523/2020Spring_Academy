@@ -8,20 +8,23 @@
 <style>
 	body{text-align: center;}
 	div {margin-top: 5px;}
+	.err{color: red; font-weight: bold; font-size: 1.2em; margin: 20px;}
 </style>
 </head>
 <body>
 	<!-- 시맨틱의 h1은 매우 중요. -->
 	<h1>회원가입</h1>
+	<div class="err">${msg }</div>
+	<a href="/login">로그인 하기</a>
 	<div id="container">
 		<div>
 			<!-- id를 form에 준다 -->
 			<form action="/join" id="frm" method="post" onsubmit="return chk()">
-				<div><label><input type="text" name="user_id" placeholder="아이디" required></label></div>			
+				<div><label><input type="text" name="user_id" placeholder="아이디" required value="${data.user_id }"></label></div>			
 				<div><label><input type="password" name="user_pw" placeholder="비밀번호" required></label></div>			
 				<div><label><input type="password" name="user_pwre" placeholder="비밀번호 확인" required></label></div>
-				<div><label><input type="text" name="nm" placeholder="이름" required></label></div>
-				<div><label><input type="email" name="email" placeholder="이메일" required></label></div>
+				<div><label><input type="text" name="nm" placeholder="이름" required value="${data.nm }"></label></div>
+				<div><label><input type="email" name="email" placeholder="이메일" required value="${data.email }"></label></div>
 				<div><input type="submit" value="회원가입"></div>			
 			</form>
 		</div>

@@ -1,6 +1,7 @@
 package com.koreait.pjt.db;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.koreait.pjt.vo.UserVO;
@@ -15,7 +16,7 @@ public class UserDAO {
 		
 				//리턴값을 jdbctemplate의 executeupdate 메소드를 사용한다.
 		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
-			
+											//객체화가 아니다.. 익명클래스다
 			//executeUpdate메소드 안에 JdbcUpdateInterface 메소드
 			@Override
 			public int Update(PreparedStatement ps) throws SQLException  {
@@ -27,18 +28,43 @@ public class UserDAO {
 			}
 		});
 	}
-//	public List<UserVO> selUserList(){
-//		List<UserVO> list = new ArrayList();
-//		String sql = "";
-//		
-//		JdbcTemplate.executeQuery(sql, new JdbcUpdateInterface() {
-//			
-//			@Override
-//			public int Update(PreparedStatement ps) throws SQLException {
-//				return 0;
-//			}
-//		});
-//		
-//		return list;
-//	}
+	//0 : 에러 발생, 1 : 로그인 성공, 2: 비밀번호 틀림, 3: 아이디 없음
+	public static int selUser(UserVO param) {
+		String sql = " select i_user, user_pw, nm"
+				+ " from t_user "
+				+ " where user_id = ? ";
+		
+		return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			ResultSet rs = null;
+			@Override
+			public ResultSet prepared(PreparedStatement ps) throws SQLException {
+				ps.setNString(1, param.getUser_id());
+				rs = ps.executeQuery();
+				return rs;
+			}
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				if(rs.next()){
+					String dbPw = rs.getNString("user_pw");
+					//입력한 비밀번호와 DB 비밀번호가 같다면
+					if(dbPw.equals(param.getUser_pw())) {
+						//로그인 성공될 때 개인 정보 가져오기
+						int i_user = rs.getInt("i_user");
+						String nm = rs.getNString("nm");
+						param.setUser_pw(null);
+						param.setI_user(i_user);
+						param.setNm(nm);
+						return 1;
+					//비밀번호가 틀릴 때
+					}else {
+						return 2;
+					}
+					//아이디 없음
+				}else {
+					return 3;
+				}
+			}
+			
+		});
+	}
 }
