@@ -19,12 +19,11 @@ public class UserDAO {
 											//객체화가 아니다.. 익명클래스다
 			//executeUpdate메소드 안에 JdbcUpdateInterface 메소드
 			@Override
-			public int Update(PreparedStatement ps) throws SQLException  {
+			public void update(PreparedStatement ps) throws SQLException  {
 				ps.setNString(1, param.getUser_id());
 				ps.setNString(2, param.getUser_pw());
 				ps.setNString(3, param.getNm());
 				ps.setNString(4, param.getEmail());
-				return ps.executeUpdate();
 			}
 		});
 	}
@@ -35,12 +34,9 @@ public class UserDAO {
 				+ " where user_id = ? ";
 		
 		return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
-			ResultSet rs = null;
 			@Override
-			public ResultSet prepared(PreparedStatement ps) throws SQLException {
+			public void prepared(PreparedStatement ps) throws SQLException {
 				ps.setNString(1, param.getUser_id());
-				rs = ps.executeQuery();
-				return rs;
 			}
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {

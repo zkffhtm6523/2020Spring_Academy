@@ -48,8 +48,10 @@ public class LoginSer extends HttpServlet {
 		}
 		HttpSession hs = request.getSession();
 		hs.setAttribute(Const.LOGIN_USER,param);
-		String fileNm = "/board/list";
-		ViewResolver.forward(fileNm, request, response);
+		//이거하면 에러남
+		//String fileNm = "/board/list";
+//		ViewResolver.forward(fileNm, request, response);
+		response.sendRedirect("/board/list");
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.koreait.pjt.board;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import com.koreait.pjt.Const;
 import com.koreait.pjt.ViewResolver;
+import com.koreait.pjt.db.BoardDAO;
+import com.koreait.pjt.vo.BoardVO;
 
 @WebServlet("/board/list")
 public class BoardListSer extends HttpServlet {
@@ -25,8 +29,11 @@ public class BoardListSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
-		
-		String fileNm = "board/list";
+		System.out.println("join test");
+		List <BoardVO> list = BoardDAO.selBoardList();
+		System.out.println("join test");
+		request.setAttribute("list", list);
+		String fileNm = "/board/list";
 		ViewResolver.forward(fileNm, request, response);
 	}
 }
