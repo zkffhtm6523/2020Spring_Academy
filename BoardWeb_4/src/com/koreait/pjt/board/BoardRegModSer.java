@@ -40,37 +40,24 @@ public class BoardRegModSer extends HttpServlet {
 	//처리 용도(DB에 등록/수정) 실시
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession hs = request.getSession();
-		System.out.println(request.getParameter("title"));
-		System.out.println(request.getParameter("ctnt"));
-		System.out.println(request.getParameter("i_board"));
-		if(request.getParameter("i_user") == null) {
-			System.out.println("업데이트 아님");
-			String title = request.getParameter("title");
-			String ctnt = request.getParameter("ctnt");
+		String title = request.getParameter("title");
+		String ctnt = request.getParameter("ctnt");
+		
+		BoardVO param = new BoardVO();
+		
+		param.setTitle(title);
+		param.setCtnt(ctnt);
+		
+		if(request.getParameter("i_user") == "") {
 			UserVO u = (UserVO)hs.getAttribute(Const.LOGIN_USER);
-			
-			BoardVO param = new BoardVO();
-			param.setTitle(title);
-			param.setCtnt(ctnt);
 			param.setI_user(u.getI_user());
-			int result = BoardDAO.insBoardList(param);
-			response.sendRedirect("/board/list");
-			return;
+			BoardDAO.insBoardList(param);
 		}else if(request.getParameter("i_user") != null){
-			System.out.println("업데이트");
-			String strI_board = request.getParameter("i_board");
-			String title = request.getParameter("title");
-			String ctnt = request.getParameter("ctnt");
-			int i_board = Integer.parseInt(strI_board);
-			
-			BoardVO param = new BoardVO();
-			param.setTitle(title);
-			param.setCtnt(ctnt);
+			int i_board = Integer.parseInt(request.getParameter("i_board"));
 			param.setI_board(i_board);
-			int result = BoardDAO.uptDetailBoardList(param);
-			response.sendRedirect("/board/list");
-			return;
+			BoardDAO.uptDetailBoardList(param);
 		}
+		response.sendRedirect("/board/list");
 	}
 
 }
