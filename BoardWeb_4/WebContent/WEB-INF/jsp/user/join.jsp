@@ -15,7 +15,6 @@
 	<!-- 시맨틱의 h1은 매우 중요. -->
 	<h1>회원가입</h1>
 	<div class="err">${msg }</div>
-	<a href="/login">로그인 하기</a>
 	<div id="container">
 		<div>
 			<!-- id를 form에 준다 -->
@@ -27,6 +26,7 @@
 				<div><label><input type="email" name="email" placeholder="이메일" required value="${data.email }"></label></div>
 				<div><input type="submit" value="회원가입"></div>			
 			</form>
+			<div><a href="/login">로그인 하기</a></div>
 		</div>
 	</div>
 </body>

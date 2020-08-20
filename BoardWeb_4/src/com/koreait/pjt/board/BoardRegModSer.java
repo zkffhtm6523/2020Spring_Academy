@@ -25,23 +25,52 @@ public class BoardRegModSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
-		ViewResolver.forward("/board/regmod", request, response);
+		if(request.getParameter("i_user") == null) {
+			ViewResolver.forward("/board/regmod", request, response);
+		}else if(((UserVO)hs.getAttribute(Const.LOGIN_USER)).getI_user() == Integer.parseInt(request.getParameter("i_user"))) {
+			BoardVO param = new BoardVO();
+			int i_board = Integer.parseInt(request.getParameter("i_board"));
+			param.setI_board(i_board);
+			param = BoardDAO.selDetailBoardList(param);
+			request.setAttribute("data", param);
+			ViewResolver.forward("/board/regmod", request, response);
+		}
 	}
 	
 	//처리 용도(DB에 등록/수정) 실시
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession hs = request.getSession();
-		String title = request.getParameter("title");
-		String ctnt = request.getParameter("ctnt");
-		UserVO u = (UserVO)hs.getAttribute(Const.LOGIN_USER);
-		System.out.println(u.getI_user());
-		
-		BoardVO param = new BoardVO();
-		param.setTitle(title);
-		param.setCtnt(ctnt);
-		param.setI_user(u.getI_user());
-		int result = BoardDAO.insBoardList(param);
-		response.sendRedirect("/board/list");
+		System.out.println(request.getParameter("title"));
+		System.out.println(request.getParameter("ctnt"));
+		System.out.println(request.getParameter("i_board"));
+		if(request.getParameter("i_user") == null) {
+			System.out.println("업데이트 아님");
+			String title = request.getParameter("title");
+			String ctnt = request.getParameter("ctnt");
+			UserVO u = (UserVO)hs.getAttribute(Const.LOGIN_USER);
+			
+			BoardVO param = new BoardVO();
+			param.setTitle(title);
+			param.setCtnt(ctnt);
+			param.setI_user(u.getI_user());
+			int result = BoardDAO.insBoardList(param);
+			response.sendRedirect("/board/list");
+			return;
+		}else if(request.getParameter("i_user") != null){
+			System.out.println("업데이트");
+			String strI_board = request.getParameter("i_board");
+			String title = request.getParameter("title");
+			String ctnt = request.getParameter("ctnt");
+			int i_board = Integer.parseInt(strI_board);
+			
+			BoardVO param = new BoardVO();
+			param.setTitle(title);
+			param.setCtnt(ctnt);
+			param.setI_board(i_board);
+			int result = BoardDAO.uptDetailBoardList(param);
+			response.sendRedirect("/board/list");
+			return;
+		}
 	}
 
 }

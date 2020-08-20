@@ -29,9 +29,7 @@ public class BoardListSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
-		System.out.println("join test");
 		List <BoardVO> list = BoardDAO.selBoardList();
-		System.out.println("join test");
 		request.setAttribute("list", list);
 		String fileNm = "/board/list";
 		ViewResolver.forward(fileNm, request, response);
