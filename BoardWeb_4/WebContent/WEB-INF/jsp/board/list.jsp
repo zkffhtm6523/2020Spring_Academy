@@ -32,6 +32,7 @@
 			<!-- /붙이고 안 붙이고 중요한 것은 /안붙이면 마지막 주소의 /만 바뀌고 붙인다 -->
 			<!-- /붙이면 localhost:8089에 /를 붙이고 시작한다.-->
 			<div class="regmod"><a href="regmod">글쓰기</a></div>
+			<div class="regmod"><a href="/logout">로그아웃</a></div>
 		</div>
 		<table>
 			<colgroup>

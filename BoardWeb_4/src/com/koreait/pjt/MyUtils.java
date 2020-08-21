@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.koreait.pjt.vo.UserVO;
+
 public class MyUtils {
 	
 //	public static UserVO getLoginUser(HttpServletRequest request) {
@@ -22,6 +24,10 @@ public class MyUtils {
 			return true;			
 		}
 		return false;
+	}
+	public static UserVO getLoginUser(HttpServletRequest request) {
+		HttpSession hs = request.getSession();
+		return (UserVO)hs.getAttribute(Const.LOGIN_USER);
 	}
 	public static String encryptString(String str) {
 		String sha = "";

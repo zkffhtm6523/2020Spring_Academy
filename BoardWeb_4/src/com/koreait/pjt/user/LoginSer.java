@@ -19,6 +19,16 @@ public class LoginSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		UserVO loginUser = MyUtils.getLoginUser(request);
+		if(loginUser != null) {
+			response.sendRedirect("/board/list");
+			return;
+		}
+		if(request.getRemoteAddr().equals("192.168.2.15")) {
+			String ipben = request.getRemoteAddr();
+			response.sendRedirect("/ipben");
+			return;
+		}
 		String fileNm = "user/login";
 		ViewResolver.forward(fileNm, request, response);
 	}
@@ -34,7 +44,6 @@ public class LoginSer extends HttpServlet {
 		
 		//result가 0인 경우는 jdbcTemplate에 구현되어 있다.
 		int result = UserDAO.selUser(param);
-		System.out.println("result : "+result);
 		if(result != 1) {
 			String msg = null;
 			switch (result) {
