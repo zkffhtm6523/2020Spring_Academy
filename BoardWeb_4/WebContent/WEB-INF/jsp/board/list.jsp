@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>리스트</title>
 <style type="text/css">
-	.container{width: 800px; margin: 0 auto; text-align: center;}
+	.container{width: 1200px; margin: 0 auto; text-align: center;}
 	table{margin: 0 auto;}
 	table, tr, th, td{border: 1px solid black; border-collapse: collapse;}
 	th{padding: 10px; background-color: lightgray;}
@@ -34,6 +34,14 @@
 			<div class="regmod"><a href="regmod">글쓰기</a></div>
 		</div>
 		<table>
+			<colgroup>
+				<col width="10%"/>
+				<col width="8%"/>
+				<col width="13%">
+				<col width="26%"/>
+				<col width="30%"/>
+				<col width="13%"/>
+			</colgroup>
 			<tr>
 				<th>게시판 번호</th>
 				<th>유저 번호</th>

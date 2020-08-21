@@ -27,7 +27,7 @@
 		<div class="form">
 			<form id="frm" action="regmod" method="post">
 				<div><input type="text" name="title" placeholder="제목을 입력해주세요" class="title" value="${data.title }"></div>
-				<div><textarea name="ctnt">${data == null ? '본문 내용과 함께 #태그를 입력하면 더 많은 사람들이 볼 수 있어요!' : '' }${data.ctnt}</textarea></div>
+				<div><textarea name="ctnt" placeholder="본문 내용과 함께 #태그를 입력하면 더 많은 사람들이 볼 수 있어요!">${data.ctnt}</textarea></div>
 				<div><input type="hidden" name="i_user" value="${data.i_user}"></div>
 				<div><input type="hidden" name="i_board" value="${data.i_board}"></div>
 				<div class="btn1"><input type="submit" value="등록" onclick="return chk()"></div>

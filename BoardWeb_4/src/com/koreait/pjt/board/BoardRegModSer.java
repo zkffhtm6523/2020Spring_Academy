@@ -48,16 +48,19 @@ public class BoardRegModSer extends HttpServlet {
 		param.setTitle(title);
 		param.setCtnt(ctnt);
 		
+		//글쓰기
 		if(request.getParameter("i_user") == "") {
 			UserVO u = (UserVO)hs.getAttribute(Const.LOGIN_USER);
 			param.setI_user(u.getI_user());
 			BoardDAO.insBoardList(param);
-		}else if(request.getParameter("i_user") != ""){
+			response.sendRedirect("/board/list");
+		//글수정
+		}else {
 			int i_board = Integer.parseInt(request.getParameter("i_board"));
 			param.setI_board(i_board);
 			BoardDAO.uptDetailBoardList(param);
+			response.sendRedirect("/boardDetail?i_board="+i_board);
 		}
-		response.sendRedirect("/board/list");
 	}
 
 }

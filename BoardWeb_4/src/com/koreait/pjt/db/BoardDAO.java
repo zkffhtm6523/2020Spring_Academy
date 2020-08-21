@@ -10,6 +10,18 @@ import com.koreait.pjt.vo.BoardVO;
 import com.koreait.pjt.vo.UserVO;
 
 public class BoardDAO {
+	public static void likeDetailBoardList(BoardVO param) {
+		String sql = " update t_board4 set hits = (select nvl(max(hits),0)+1 from t_board4 where i_board = ? ) where i_board = ? ";
+		JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+			
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_board());
+				ps.setInt(2, param.getI_board());
+			}
+		});
+	}
+	
 	public static int uptDetailBoardList(BoardVO param) {
 		String sql = " update t_board4 set title = ?, ctnt = ?, m_dt = sysdate where i_board = ? ";
 		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {

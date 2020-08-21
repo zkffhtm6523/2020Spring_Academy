@@ -25,11 +25,13 @@ public class BoardDetailSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
-		
 		String strI_board = request.getParameter("i_board");
 		int i_board = Integer.parseInt(strI_board);
 		BoardVO param = new BoardVO();
 		param.setI_board(i_board);
+		//조회수를 올려주세요!!
+		BoardDAO.likeDetailBoardList(param);
+		
 		param = BoardDAO.selDetailBoardList(param);
 		request.setAttribute("data", param);
 //		ViewResolver.forwardLoginChk("board/detail", request, response);
