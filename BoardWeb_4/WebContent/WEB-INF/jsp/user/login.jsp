@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <style>
+	*{outline: none; }
 	.container{margin: 0 auto; text-align: center; width: 500px; }
 	.err{color: red; font-weight: bold; font-size: 1.2em; }
 	.form{background-color: #2C54A3;}

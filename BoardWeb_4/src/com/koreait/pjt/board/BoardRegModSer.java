@@ -52,7 +52,7 @@ public class BoardRegModSer extends HttpServlet {
 			UserVO u = (UserVO)hs.getAttribute(Const.LOGIN_USER);
 			param.setI_user(u.getI_user());
 			BoardDAO.insBoardList(param);
-		}else if(request.getParameter("i_user") != null){
+		}else if(request.getParameter("i_user") != ""){
 			int i_board = Integer.parseInt(request.getParameter("i_board"));
 			param.setI_board(i_board);
 			BoardDAO.uptDetailBoardList(param);

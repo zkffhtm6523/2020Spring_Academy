@@ -24,7 +24,7 @@ public class BoardDAO {
 	}
 	
 	public static BoardVO selDetailBoardList(BoardVO param) {
-	String sql = " select t_board4.title, t_board4.r_dt, t_board4.hits, t_board4.ctnt, t_user.nm, t_user.i_user "
+	String sql = " select t_board4.title, TO_CHAR(t_board4.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt , t_board4.hits, t_board4.ctnt, t_user.nm, t_user.i_user "
 				+" from t_board4 "
 				+" inner join t_user "
 				+" on t_board4.i_user = t_user.i_user "
