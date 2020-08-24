@@ -10,7 +10,9 @@ import com.koreait.pjt.vo.BoardVO;
 import com.koreait.pjt.vo.UserVO;
 
 public class BoardDAO {
-	public static void likeDetailBoardList(BoardVO param) {
+
+	
+	public static void hitDetailBoardList(BoardVO param) {
 		String sql = " update t_board4 set hits = (select nvl(max(hits),0)+1 from t_board4 where i_board = ? ) where i_board = ? ";
 		JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 			
@@ -33,6 +35,41 @@ public class BoardDAO {
 				ps.setInt(3, param.getI_board());
 			}
 		});
+	}
+	
+	public static BoardVO likeDetailBoardList(BoardVO param) {
+		String sql = " select A.*,B.nm, DECODE(C.i_user, null, 0, 1) as yn_like "
+					+ " from t_board4 A "
+					+ " inner join t_user B "
+					+ " on A.i_user = B.i_user "
+					+ " left join t_board4_like C "
+					+ " on A.i_board = C.i_board "
+					+ " and C.i_user = ? "
+					+ " where A.i_board = ? ";
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				System.out.println(param.getI_user());
+				System.out.println(param.getI_board());
+				ps.setInt(1, param.getI_user());
+				ps.setInt(2, param.getI_board());
+			}
+			
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				if(rs.next()) {
+					int yn_like = rs.getInt("yn_like");
+					System.out.println(yn_like);
+					param.setBoard_like(yn_like);
+					return 1;
+				}else {
+					return 2;
+				}
+			}
+		});
+		
+		return param;
 	}
 	
 	public static BoardVO selDetailBoardList(BoardVO param) {
@@ -135,4 +172,5 @@ public class BoardDAO {
 			public void update(PreparedStatement ps) throws SQLException {}
 		});
 	}
+
 }

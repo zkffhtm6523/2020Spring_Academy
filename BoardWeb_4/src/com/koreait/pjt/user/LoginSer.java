@@ -21,17 +21,20 @@ public class LoginSer extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserVO loginUser = MyUtils.getLoginUser(request);
+		System.out.println("IP : "+request.getRemoteAddr());
 		if(loginUser != null) {
 			response.sendRedirect("/board/list");
 			return;
 		}
 		if(request.getRemoteAddr().equals("192.168.2.15")) {
 			String ipben = request.getRemoteAddr();
-			response.sendRedirect("/ipben");
+			response.sendRedirect("/ipben?ipben="+ipben);
+			return;
+		}else {
+			String fileNm = "user/login";
+			ViewResolver.forward(fileNm, request, response);
 			return;
 		}
-		String fileNm = "user/login";
-		ViewResolver.forward(fileNm, request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//login의 form태그 name을 받아옴
@@ -55,6 +58,7 @@ public class LoginSer extends HttpServlet {
 			request.setAttribute("msg", msg);
 			request.setAttribute("data", param);
 			doGet(request,response);
+			return;
 		}
 		//브라우저, OS, IP 정보 가져오기
 		String agent = request.getHeader("User-Agent");
@@ -70,22 +74,20 @@ public class LoginSer extends HttpServlet {
 		ulhVO.setIp_addr(ip_addr);
 		ulhVO.setBrowser(browser);
 		
-		//---------------------------------------------
+		UserDAO.insUserLoginHistory(ulhVO);
+		
 		HttpSession hs = request.getSession();
 		hs.setAttribute(Const.LOGIN_USER,param);
-		//이거하면 에러남
-		//String fileNm = "/board/list";
-//		ViewResolver.forward(fileNm, request, response);
 		response.sendRedirect("/board/list");
 	}
 	//메소드 : 브라우저 정보 가져오기
 	private String getBrowser(String agent) {
-		if(agent.contains("msie")) {
+		if(agent.toLowerCase().contains("msie")) {
 			return "ie";
-		}else if(agent.contains("safari")) {
-			return "safari";
-		}else if(agent.contains("chrome")) {
+		}else if(agent.toLowerCase().contains("chrome")) {
 			return "chrome";
+		}else if(agent.toLowerCase().contains("safari")) {
+			return "safari";
 		}
 		return "";
 	}
@@ -93,14 +95,16 @@ public class LoginSer extends HttpServlet {
 	private String getOs(String agent) {
 		if(agent.contains("mac")) {
 			return "mac";
-		}else if(agent.contains("windows")) {
+		}else if(agent.toLowerCase().contains("windows")) {
 			return "Windows";
-		}else if(agent.contains("x11")) {
+		}else if(agent.toLowerCase().contains("x11")) {
 			return "linux";
-		}else if(agent.contains("android")) {
+		}else if(agent.toLowerCase().contains("android")) {
 			return "android"; 
-		}else if(agent.contains("iphone")) {
+		}else if(agent.toLowerCase().contains("iphone")) {
 			return "ios";
+		}else if(agent.toLowerCase().contains("linux")) {
+			return "linux";
 		}
 		return "";
 	}

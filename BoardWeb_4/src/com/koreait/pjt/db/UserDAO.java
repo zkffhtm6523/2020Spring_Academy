@@ -4,10 +4,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.koreait.pjt.vo.UserLoginHistoryVO;
 import com.koreait.pjt.vo.UserVO;
 
 //콜백함수 부르는 방법, AOP, 관점지향 프로그래밍
 public class UserDAO {
+	public static int insUserLoginHistory(UserLoginHistoryVO ulhVO) {
+		String sql = " INSERT INTO t_user_loginhistory "
+				+ " (i_history, i_user, ip_addr, os, browser, r_dt) "
+				+ " VALUES "
+				+ " (seq_userloginhistory.nextval, ?, ?, ?, ?, sysdate) ";
+		
+		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface(
+				) {
+			
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, ulhVO.getI_user());
+				ps.setNString(2, ulhVO.getIp_addr());
+				ps.setNString(3, ulhVO.getOs());
+				ps.setNString(4, ulhVO.getBrowser());
+			}
+		});
+	}
+	
 	public static int insUser(UserVO param) {
 		
 		String sql = " INSERT INTO t_user (i_user, user_id, user_pw, nm, email) "

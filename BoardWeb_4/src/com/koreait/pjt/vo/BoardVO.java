@@ -9,6 +9,14 @@ public class BoardVO {
 	private String r_dt;
 	private String m_dt;
 	private String nm;
+	private int board_like;
+	
+	public int getBoard_like() {
+		return board_like;
+	}
+	public void setBoard_like(int board_like) {
+		this.board_like = board_like;
+	}
 	public int getI_board() {
 		return i_board;
 	}

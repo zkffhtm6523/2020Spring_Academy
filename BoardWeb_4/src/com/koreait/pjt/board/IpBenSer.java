@@ -16,10 +16,8 @@ import com.koreait.pjt.ViewResolver;
 public class IpBenSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String ipben = request.getParameter("ip");
+		String ipben = request.getParameter("ipben");
+		request.setAttribute("ipben", ipben);
 		ViewResolver.forward("/user/err", request, response);
 	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-
 }

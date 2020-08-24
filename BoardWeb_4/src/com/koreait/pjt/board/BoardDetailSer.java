@@ -45,13 +45,15 @@ public class BoardDetailSer extends HttpServlet {
 		//int를 썼으면 null이 넘어와서 에러터짐. integer는 null을 담을 수 있음
 		//application에 null이거나, application과 loginUser와 같지 않다면 조회수 올려줌
 		if(readI_user == null || readI_user != loginUser.getI_user()) {
-			BoardDAO.likeDetailBoardList(param);
+			BoardDAO.hitDetailBoardList(param);
 			//application에 속성값 넣어줌, 다음에는 조회수가 안 올라감
 			application.setAttribute("read_"+strI_board, loginUser.getI_user());
 		}
 		
 		
 		param = BoardDAO.selDetailBoardList(param);
+		param = BoardDAO.likeDetailBoardList(param);
+		
 		request.setAttribute("data", param);
 //		ViewResolver.forwardLoginChk("board/detail", request, response);
 		ViewResolver.forward("board/detail", request, response);

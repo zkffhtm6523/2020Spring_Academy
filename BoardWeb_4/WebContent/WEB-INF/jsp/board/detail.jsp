@@ -25,6 +25,9 @@
 	.list a, .list1 a{text-align: center; color: white; text-decoration: none; padding: 10px;background: #1e90ff;
 		float: left;}
 	form{width: 100px;float: left;}
+	#like:hover{
+	cursor:pointer;
+	}
 </style>
 </head>
 <body>
@@ -35,7 +38,9 @@
 		<ul>
 			<li>${data.nm}&nbsp;&nbsp;&nbsp;|</li>
 			<li>${data.r_dt}&nbsp;&nbsp;&nbsp;|</li>
-			<li>조회수&nbsp;[${data.hits}]</li>
+			<li>조회수&nbsp;[${data.hits}] |</li>
+			<li id="like" onclick="like(${data.board_like}})">${data.board_like == 1?'💖':'🖤'}</li>
+			<li>[${data.board_like}] |</li>
 		</ul>
 		<hr>
 		<div class="ctnt">${data.ctnt}</div>
@@ -55,6 +60,12 @@
 				var chk = confirm('삭제하시겠습니까?') 
 				if(chk){
 					delFrm.submit()
+				}
+			}
+			function like(param){
+				if(param == 1){
+				}else{
+					
 				}
 			}
 		</script>
