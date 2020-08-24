@@ -12,6 +12,7 @@ import com.koreait.pjt.Const;
 import com.koreait.pjt.MyUtils;
 import com.koreait.pjt.ViewResolver;
 import com.koreait.pjt.db.UserDAO;
+import com.koreait.pjt.vo.UserLoginHistoryVO;
 import com.koreait.pjt.vo.UserVO;
 
 @WebServlet("/login")
@@ -55,12 +56,53 @@ public class LoginSer extends HttpServlet {
 			request.setAttribute("data", param);
 			doGet(request,response);
 		}
+		//브라우저, OS, IP 정보 가져오기
+		String agent = request.getHeader("User-Agent");
+		System.out.println("agent : "+agent);
+		String os = getOs(agent);
+		String browser = getBrowser(agent);
+		
+		String ip_addr = request.getRemoteAddr();
+		
+		UserLoginHistoryVO ulhVO = new UserLoginHistoryVO();
+		ulhVO.setI_user(param.getI_user());
+		ulhVO.setOs(os);
+		ulhVO.setIp_addr(ip_addr);
+		ulhVO.setBrowser(browser);
+		
+		//---------------------------------------------
 		HttpSession hs = request.getSession();
 		hs.setAttribute(Const.LOGIN_USER,param);
 		//이거하면 에러남
 		//String fileNm = "/board/list";
 //		ViewResolver.forward(fileNm, request, response);
 		response.sendRedirect("/board/list");
+	}
+	//메소드 : 브라우저 정보 가져오기
+	private String getBrowser(String agent) {
+		if(agent.contains("msie")) {
+			return "ie";
+		}else if(agent.contains("safari")) {
+			return "safari";
+		}else if(agent.contains("chrome")) {
+			return "chrome";
+		}
+		return "";
+	}
+	//메소드 : OS정보 가져오기
+	private String getOs(String agent) {
+		if(agent.contains("mac")) {
+			return "mac";
+		}else if(agent.contains("windows")) {
+			return "Windows";
+		}else if(agent.contains("x11")) {
+			return "linux";
+		}else if(agent.contains("android")) {
+			return "android"; 
+		}else if(agent.contains("iphone")) {
+			return "ios";
+		}
+		return "";
 	}
 
 }
