@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>상세보기 페이지</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style type="text/css">
 	body{background: lightgray;}
 	.container{width: 600px; margin:20px auto; background-color: white;
@@ -28,6 +29,12 @@
 	#like:hover{
 	cursor:pointer;
 	}
+	#like{
+	    position: relative;
+    	top: 5px;
+    	color:red;
+	}
+	.text1{font-weight: bold;}
 </style>
 </head>
 <body>
@@ -39,9 +46,22 @@
 			<li>${data.nm}&nbsp;&nbsp;&nbsp;|</li>
 			<li>${data.r_dt}&nbsp;&nbsp;&nbsp;|</li>
 			<li>조회수&nbsp;[${data.hits}] |</li>
-			<li id="like" onclick="like(${data.board_like}})">${data.board_like == 1?'💖':'🖤'}</li>
-			<li>[${data.board_like}] |</li>
+			<li id="like" onclick="toggleLike(${data.yn_like})">
+				<c:if test="${data.yn_like == 0 }">
+					<span class="material-icons">favorite_border</span>
+				</c:if>
+				<c:if test="${data.yn_like == 1 }">
+					<span class="material-icons">favorite</span>
+				</c:if>
+			</li>
+			<li>[${data.likeCount}] |</li>
 		</ul>
+		<div class="likeList">
+			<span class="text1">좋아요 리스트 : </span>
+			<c:forEach items="${list }" var="item">
+				<span>${item.nm} |</span>
+			</c:forEach>
+		</div>
 		<hr>
 		<div class="ctnt">${data.ctnt}</div>
 		<hr>
@@ -62,11 +82,8 @@
 					delFrm.submit()
 				}
 			}
-			function like(param){
-				if(param == 1){
-				}else{
-					
-				}
+			function toggleLike(yn_like){
+				location.href="/board/toggleLike?i_board=${data.i_board}&yn_like="+yn_like
 			}
 		</script>
 	</div>

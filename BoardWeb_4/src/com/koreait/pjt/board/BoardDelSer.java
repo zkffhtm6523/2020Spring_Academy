@@ -27,6 +27,8 @@ public class BoardDelSer extends HttpServlet {
 		BoardVO param = new BoardVO();
 		param.setI_board(i_board);
 		BoardDAO.delBoardList(param);
+		
+		
 		response.sendRedirect("/board/list");
 	}
 

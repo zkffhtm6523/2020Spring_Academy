@@ -9,13 +9,27 @@ public class BoardVO {
 	private String r_dt;
 	private String m_dt;
 	private String nm;
-	private int board_like;
+	private int yn_like;
+	private int likeCount;
+	private int loginUser;
 	
-	public int getBoard_like() {
-		return board_like;
+	public int getLoginUser() {
+		return loginUser;
 	}
-	public void setBoard_like(int board_like) {
-		this.board_like = board_like;
+	public void setLoginUser(int loginUser) {
+		this.loginUser = loginUser;
+	}
+	public int getLikeCount() {
+		return likeCount;
+	}
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+	public int getYn_like() {
+		return yn_like;
+	}
+	public void setYn_like(int yn_like) {
+		this.yn_like = yn_like;
 	}
 	public int getI_board() {
 		return i_board;

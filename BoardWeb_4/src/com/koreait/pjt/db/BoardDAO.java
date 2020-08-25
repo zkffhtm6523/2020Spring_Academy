@@ -11,7 +11,60 @@ import com.koreait.pjt.vo.UserVO;
 
 public class BoardDAO {
 
+	public static ArrayList<BoardVO> likeListDetailBoardList(BoardVO param) {
+		ArrayList<BoardVO> list = new ArrayList<BoardVO>();
+		String sql = " select b.nm, A.i_user "
+				+ " from t_board4_like A "
+				+ " inner join t_user B "
+				+ " on A.i_user = B.i_user "
+				+ " where a.i_board = ? ";
+		
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_board());
+			}
+			
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				while (rs.next()) {
+					BoardVO vo = new BoardVO();
+					String nm = rs.getNString("nm");
+					vo.setNm(nm);
+					list.add(vo);
+				}
+				return 1;
+			}
+		});
+		return list;
+	}
+	public static void delLikeDetailBoardList(BoardVO param) {
+		String sql = " delete from t_board4_like where i_user = ? and i_board = ? ";
+		JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+			
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_user());
+				ps.setInt(2, param.getI_board());
+			}
+		});
+	}
 	
+	//좋아요 없을 시 추가
+	public static void insLikeDetailBoardList(BoardVO param) {
+		String sql = " insert into t_board4_like (i_user, i_board) "
+					+ " values "
+					+ " (?, ?) ";
+		JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+			
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_user());
+				ps.setInt(2, param.getI_board());
+			}
+		});
+	}
 	public static void hitDetailBoardList(BoardVO param) {
 		String sql = " update t_board4 set hits = (select nvl(max(hits),0)+1 from t_board4 where i_board = ? ) where i_board = ? ";
 		JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
@@ -38,30 +91,32 @@ public class BoardDAO {
 	}
 	
 	public static BoardVO likeDetailBoardList(BoardVO param) {
-		String sql = " select A.*,B.nm, DECODE(C.i_user, null, 0, 1) as yn_like "
+		String sql = " select DECODE(C.i_user, null, 0, 1) as yn_like, "
+					+ " ( SELECT count(*) FROM t_board4_like WHERE i_board = ? ) as likeCount "
 					+ " from t_board4 A "
 					+ " inner join t_user B "
 					+ " on A.i_user = B.i_user "
 					+ " left join t_board4_like C "
 					+ " on A.i_board = C.i_board "
-					+ " and C.i_user = ? "
+					+ " AND C.i_user = ? "
 					+ " where A.i_board = ? ";
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 			
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				System.out.println(param.getI_user());
-				System.out.println(param.getI_board());
-				ps.setInt(1, param.getI_user());
-				ps.setInt(2, param.getI_board());
+				ps.setInt(1, param.getI_board());
+				ps.setInt(2, param.getLoginUser());
+				ps.setInt(3, param.getI_board());
 			}
 			
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {
 				if(rs.next()) {
 					int yn_like = rs.getInt("yn_like");
-					System.out.println(yn_like);
-					param.setBoard_like(yn_like);
+					int likeCount = rs.getInt("likecount");
+					//내가 이 글에 좋아요를 했으면 1, 안 했으면 0
+					param.setYn_like(yn_like);
+					param.setLikeCount(likeCount);
 					return 1;
 				}else {
 					return 2;
@@ -172,5 +227,6 @@ public class BoardDAO {
 			public void update(PreparedStatement ps) throws SQLException {}
 		});
 	}
+
 
 }

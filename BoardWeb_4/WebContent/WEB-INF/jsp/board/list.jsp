@@ -36,20 +36,20 @@
 		</div>
 		<table>
 			<colgroup>
-				<col width="10%"/>
+				<col width="9%"/>
 				<col width="8%"/>
-				<col width="13%">
-				<col width="26%"/>
-				<col width="30%"/>
-				<col width="13%"/>
+				<col width="15%">
+				<col width="35%"/>
+				<col width="10%"/>
+				<col width="25%"/>
 			</colgroup>
 			<tr>
 				<th>게시판 번호</th>
 				<th>유저 번호</th>
 				<th>유저명</th>
 				<th>제목</th>
-				<th>작성 날짜</th>
 				<th>조회수</th>
+				<th>작성 날짜</th>
 			</tr>
 			<!-- items의 값을 el식으로 list 받아옴  var = 'item'은 item이라는 이름으로 pagecontext에 계속 박아줌 -->
 			<c:forEach items="${list }" var="item" >
@@ -58,8 +58,8 @@
 			      <td>${item.i_user}</td>
 			      <td>${item.nm}</td>
 			      <td>${item.title}</td>
-			      <td>${item.r_dt}</td>
 			      <td>${item.hits}</td>
+			      <td>${item.r_dt}</td>
 			   </tr>
 			</c:forEach>
 		</table>

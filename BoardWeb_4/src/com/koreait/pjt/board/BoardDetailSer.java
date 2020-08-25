@@ -1,6 +1,7 @@
 package com.koreait.pjt.board;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -32,30 +33,39 @@ public class BoardDetailSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
-		
+		if(request.getRemoteAddr().equals("192.168.2.15")) {
+			String ipben = request.getRemoteAddr();
+			response.sendRedirect("/ipben?ipben="+ipben);
+			return;
+		}else {
 		//게시판 목록->상세화면으로 선택한 값의 i_boardf를 받아오고 vo에 값 저장
 		String strI_board = request.getParameter("i_board");
 		int i_board = Integer.parseInt(strI_board);
 		BoardVO param = new BoardVO();
 		param.setI_board(i_board);
-
+		
 		//application 받아오기 -> application에 속성값 받아줌(초기에는 null이 들어감)
 		ServletContext application = getServletContext();
 		Integer readI_user = (Integer)application.getAttribute("read_"+strI_board);
 		//int를 썼으면 null이 넘어와서 에러터짐. integer는 null을 담을 수 있음
+		
 		//application에 null이거나, application과 loginUser와 같지 않다면 조회수 올려줌
 		if(readI_user == null || readI_user != loginUser.getI_user()) {
 			BoardDAO.hitDetailBoardList(param);
 			//application에 속성값 넣어줌, 다음에는 조회수가 안 올라감
 			application.setAttribute("read_"+strI_board, loginUser.getI_user());
 		}
-		
-		
 		param = BoardDAO.selDetailBoardList(param);
+		param.setLoginUser(loginUser.getI_user());
 		param = BoardDAO.likeDetailBoardList(param);
 		
+		System.out.println(param.getI_board());
+		ArrayList<BoardVO> list = BoardDAO.likeListDetailBoardList(param);
+		
 		request.setAttribute("data", param);
+		request.setAttribute("list", list);
 //		ViewResolver.forwardLoginChk("board/detail", request, response);
 		ViewResolver.forward("board/detail", request, response);
+		}
 	}
 }
