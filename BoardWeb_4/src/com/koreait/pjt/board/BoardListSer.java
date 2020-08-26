@@ -12,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import com.koreait.pjt.Const;
 import com.koreait.pjt.ViewResolver;
+import com.koreait.pjt.db.BoardCmtDAO;
 import com.koreait.pjt.db.BoardDAO;
+import com.koreait.pjt.vo.BoardCmtVO;
 import com.koreait.pjt.vo.BoardVO;
 
 @WebServlet("/board/list")
@@ -29,7 +31,10 @@ public class BoardListSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
+		BoardCmtVO cmt = new BoardCmtVO();
+		cmt = BoardCmtDAO.selCountCmt(cmt);
 		List <BoardVO> list = BoardDAO.selBoardList();
+		
 		request.setAttribute("list", list);
 		String fileNm = "/board/list";
 		ViewResolver.forward(fileNm, request, response);

@@ -2,6 +2,7 @@ package com.koreait.pjt.board;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpSession;
 import com.koreait.pjt.Const;
 import com.koreait.pjt.MyUtils;
 import com.koreait.pjt.ViewResolver;
+import com.koreait.pjt.db.BoardCmtDAO;
 import com.koreait.pjt.db.BoardDAO;
+import com.koreait.pjt.vo.BoardCmtVO;
 import com.koreait.pjt.vo.BoardVO;
 import com.koreait.pjt.vo.UserVO;
 
@@ -59,11 +62,21 @@ public class BoardDetailSer extends HttpServlet {
 		param.setLoginUser(loginUser.getI_user());
 		param = BoardDAO.likeDetailBoardList(param);
 		
-		System.out.println(param.getI_board());
 		ArrayList<BoardVO> list = BoardDAO.likeListDetailBoardList(param);
 		
+		//댓글 내용 불러오기
+		BoardCmtVO cmtVO = new BoardCmtVO();
+		cmtVO.setI_board(param.getI_board());
+		
+		List<BoardCmtVO> cmtList = BoardCmtDAO.selCmt(cmtVO); 
+		
+		//게시글 상세 속성 부여
 		request.setAttribute("data", param);
+		//댓글 속성 부여
 		request.setAttribute("list", list);
+		//댓글 목록 속성 부여
+		request.setAttribute("cmtlist", cmtList);
+		
 //		ViewResolver.forwardLoginChk("board/detail", request, response);
 		ViewResolver.forward("board/detail", request, response);
 		}

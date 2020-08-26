@@ -12,7 +12,15 @@ public class BoardVO {
 	private int yn_like;
 	private int likeCount;
 	private int loginUser;
+	private int countCmt;
 	
+	
+	public int getCountCmt() {
+		return countCmt;
+	}
+	public void setCountCmt(int countCmt) {
+		this.countCmt = countCmt;
+	}
 	public int getLoginUser() {
 		return loginUser;
 	}

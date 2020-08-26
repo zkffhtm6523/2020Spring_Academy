@@ -15,8 +15,7 @@ public class UserDAO {
 				+ " VALUES "
 				+ " (seq_userloginhistory.nextval, ?, ?, ?, ?, sysdate) ";
 		
-		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface(
-				) {
+		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 			
 			@Override
 			public void update(PreparedStatement ps) throws SQLException {

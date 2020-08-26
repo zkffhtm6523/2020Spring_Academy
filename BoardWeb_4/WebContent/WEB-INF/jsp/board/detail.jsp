@@ -12,7 +12,7 @@
 <style type="text/css">
 	body{background: lightgray;}
 	.container{width: 600px; margin:20px auto; background-color: white;
-	height: 800px; padding: 20px 50px 20px 50px; }
+	 padding: 20px 50px 20px 50px; }
 	.hr1{height: 3px; background: black; border: 0px; margin-top: 0px;}
 	h2{margin-bottom: 10px;}
 	h3{margin-top: 10px; margin-bottom: 10px;}
@@ -26,15 +26,27 @@
 	.list a, .list1 a{text-align: center; color: white; text-decoration: none; padding: 10px;background: #1e90ff;
 		float: left;}
 	form{width: 100px;float: left;}
-	#like:hover{
-	cursor:pointer;
-	}
+	#like:hover{cursor:pointer;}
 	#like{
 	    position: relative;
     	top: 5px;
     	color:red;
 	}
 	.text1{font-weight: bold;}
+	.comment{clear: both; width: 600px;}
+	.comment1{width: 600px;; text-align: center;}
+	.commentInput{display: inline-block;}
+	#commentId0{width: 480px; padding: 10px;}
+	.commentList{width:600px; text-align: center;
+	margin: 50px auto;}
+	table, th, tr, td{border: 1px solid black; border-collapse: collapse;
+	margin: 0 auto;}
+	table{margin-top: 20px;}
+	td{padding: 10px;}
+	.btn{color: blue;}
+	.btn:hover {cursor:pointer;}
+	
+}
 </style>
 </head>
 <body>
@@ -75,7 +87,40 @@
 				</form>
 			</c:if>
 		</div>
-		<script type="text/javascript">
+		<div class="comment">
+			<form id="cmtFrm" action="/board/cmt" method="post">
+				<!-- i_cmt 값이 0이면 등록, 1이면 수정 -->
+				<input type="hidden" name="i_cmt" value="0">
+				<input type="hidden" name="i_board" value="${data.i_board}">
+				<div class="comment1">
+					<input type="text" name="cmt" placeholder="댓글 내용" class="commentInput" id="commentId0">
+					<input type="submit" value="전송" id="commentId" class="commentInput">
+				</div>
+			</form>
+		</div>
+		<div class="commentList">
+			<h2>댓글 리스트</h2>
+				<c:forEach items="${cmtlist }" var="item" >
+					<table>
+					   <tr>
+					      <td class="i_cmt">댓글 번호 | ${item.i_cmt}</td>
+					      <td>작성자명 | ${item.nm}</td>
+					   </tr>
+					   <tr>
+					      <td colspan="2">${item.cmt}</td>
+					   </tr>
+					   <tr>
+					      <td>작성날짜 | ${item.r_dt}</td>
+					      <td>수정날짜 | ${item.m_dt}</td>
+					   </tr>
+					</table>
+					<c:if test="${loginUser.i_user == item.i_user}">
+						<span class="btn" onclick="uptInput(${item.i_cmt},'${item.cmt}')">수정</span>
+						<span class="btn" onclick="delComment(${item.i_cmt})">삭제</span>
+					</c:if>
+				</c:forEach>
+		</div>
+		<script>
 			function submitDel() {
 				var chk = confirm('삭제하시겠습니까?') 
 				if(chk){
@@ -85,6 +130,22 @@
 			function toggleLike(yn_like){
 				location.href="/board/toggleLike?i_board=${data.i_board}&yn_like="+yn_like
 			}
+			function uptInput(i_cmt, cmt) {
+				console.log(i_cmt)
+				console.log(cmt)
+				var cmtFrm1 = document.getElementById('cmtFrm');
+				var cmtInput = document.getElementById('commentId0');
+				cmtInput.setAttribute('value', cmt)
+				cmtFrm.i_cmt.setAttribute('value',i_cmt)
+			}
+			
+			function delComment(i_cmt, cmt){
+				var chk = confirm('댓글 삭제하시겠습니까?')
+				if(chk){
+					location.href="/board/cmt?i_cmt="+i_cmt+"&i_board=${data.i_board}"
+				}
+			}
+			
 		</script>
 	</div>
 </body>
