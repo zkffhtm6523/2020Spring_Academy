@@ -161,20 +161,58 @@ public class BoardDAO {
 	});
 		return param;
 	}
+	public static int selPagingCnt(final BoardVO param) {
+		String sql = " select ceil(count(i_board) / ?) from t_board4 ";
+		
+		return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getRecode_cnt());
+			}
+			@Override
+			//스칼라값 : 1행 1열만 있는 값
+			public int executeQuery(ResultSet rs) throws SQLException {
+				if(rs.next()) {
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		});
+	}
 	
-	public static List<BoardVO> selBoardList() {
+	
+	
+	public static List<BoardVO> selBoardList(BoardVO vo) {
 		List<BoardVO> list = new ArrayList<BoardVO>();
-		String sql = " select t_board4.i_board, t_board4.title, t_board4.r_dt, t_board4.i_user, t_board4.hits, t_user.nm "
-					+ " from t_board4 "
-					+ " inner join t_user "
-					+ " on t_board4.i_user = t_user.i_user "
-					+ " order by t_board4.i_board desc ";
+//		String sql = " select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm,  "
+//				 + " (select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt "
+//				+ " from t_board4 A "
+//				+ " inner join t_user B "
+//				+ " on A.i_user = B.i_user "
+//				+ " order by a.i_board desc ";
+		String sql = " select * from " 
+					+ " ( "
+					+ " select rownum as rnum, A.* from "
+					+ " ( "
+					+ " select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm, "
+					+ " (select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt "
+					+ " from t_board4 A "
+					+ " inner join t_user B "
+					+ " on A.i_user = B.i_user "
+					+ " order by a.i_board desc "
+					+ " ) A "
+					+ " where rownum <= ? "
+					+ " )A "
+					+ " where A.rnum > ? ";
 		
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
 			@Override
-			public void prepared(PreparedStatement ps) throws SQLException {}
-
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, vo.getEldx());
+				ps.setInt(2, vo.getSldx());
+			}
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {
 				while(rs.next()) {
@@ -184,6 +222,7 @@ public class BoardDAO {
 					int i_user = rs.getInt("i_user");
 					int hits = rs.getInt("hits");
 					String nm = rs.getNString("nm");
+					int countCmt = rs.getInt("countCmt"); 
 					
 					BoardVO vo = new BoardVO();
 					vo.setI_board(i_board);
@@ -192,7 +231,7 @@ public class BoardDAO {
 					vo.setI_user(i_user);
 					vo.setR_dt(r_dt);
 					vo.setNm(nm);
-					
+					vo.setCountCmt(countCmt);
 					list.add(vo);
 				}
 				return 1;

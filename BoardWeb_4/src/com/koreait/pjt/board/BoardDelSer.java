@@ -11,9 +11,6 @@ import com.koreait.pjt.MyUtils;
 import com.koreait.pjt.db.BoardDAO;
 import com.koreait.pjt.vo.BoardVO;
 
-/**
- * Servlet implementation class BoardDelSer
- */
 @WebServlet("/board/del")
 public class BoardDelSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;

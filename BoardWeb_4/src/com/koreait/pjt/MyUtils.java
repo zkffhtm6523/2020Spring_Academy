@@ -56,4 +56,28 @@ public class MyUtils {
 		}
 		return sha;
 	}
+	public static int getIntParameter(HttpServletRequest request, String keyNm) {
+	      return parseStrToInt(request.getParameter(keyNm));
+	   }
+	public static int parseStrToInt(String str, int n) {
+	      int num = n;
+	      try {
+	         num = Integer.parseInt(str);
+	      } catch (Exception e) {
+	         
+	      }
+	      
+	      return num;
+	   }
+	   
+	   public static int parseStrToInt(String str) {
+	      int num = 0;
+	      try {
+	         num = Integer.parseInt(str);
+	      } catch (Exception e) {
+	         
+	      }
+	      
+	      return num;
+	   }
 }

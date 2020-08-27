@@ -13,8 +13,30 @@ public class BoardVO {
 	private int likeCount;
 	private int loginUser;
 	private int countCmt;
+	private int recode_cnt;
+	private int eldx;
+	
+	public int getEldx() {
+		return eldx;
+	}
+	public void setEldx(int eldx) {
+		this.eldx = eldx;
+	}
+	public int getSldx() {
+		return sldx;
+	}
+	public void setSldx(int sldx) {
+		this.sldx = sldx;
+	}
+	private int sldx;
 	
 	
+	public int getRecode_cnt() {
+		return recode_cnt;
+	}
+	public void setRecode_cnt(int recode_cnt) {
+		this.recode_cnt = recode_cnt;
+	}
 	public int getCountCmt() {
 		return countCmt;
 	}

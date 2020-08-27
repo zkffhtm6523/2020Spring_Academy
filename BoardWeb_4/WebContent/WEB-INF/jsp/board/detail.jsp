@@ -36,7 +36,7 @@
 	.comment{clear: both; width: 600px;}
 	.comment1{width: 600px;; text-align: center;}
 	.commentInput{display: inline-block;}
-	#commentId0{width: 480px; padding: 10px;}
+	#commentId0{width: 440px; padding: 10px;}
 	.commentList{width:600px; text-align: center;
 	margin: 50px auto;}
 	table, th, tr, td{border: 1px solid black; border-collapse: collapse;
@@ -95,6 +95,7 @@
 				<div class="comment1">
 					<input type="text" name="cmt" placeholder="댓글 내용" class="commentInput" id="commentId0">
 					<input type="submit" value="전송" id="commentId" class="commentInput">
+					<input type="button" value="삭제" id="commentId1" class="commentInput" onclick="clkCmtCancle()">
 				</div>
 			</form>
 		</div>
@@ -121,6 +122,12 @@
 				</c:forEach>
 		</div>
 		<script>
+			function clkCmtCancle() {
+				cmtFrm.i_cmt.value = 0
+				cmtFrm.cmt.value = ''
+				commentId.value = '전송'
+			}
+		
 			function submitDel() {
 				var chk = confirm('삭제하시겠습니까?') 
 				if(chk){
@@ -131,12 +138,9 @@
 				location.href="/board/toggleLike?i_board=${data.i_board}&yn_like="+yn_like
 			}
 			function uptInput(i_cmt, cmt) {
-				console.log(i_cmt)
-				console.log(cmt)
-				var cmtFrm1 = document.getElementById('cmtFrm');
-				var cmtInput = document.getElementById('commentId0');
-				cmtInput.setAttribute('value', cmt)
+				commentId0.setAttribute('value', cmt)
 				cmtFrm.i_cmt.setAttribute('value',i_cmt)
+				commentId.value = '수정'
 			}
 			
 			function delComment(i_cmt, cmt){
