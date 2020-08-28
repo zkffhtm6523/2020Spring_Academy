@@ -77,8 +77,11 @@
 		<hr>
 		<div class="ctnt">${data.ctnt}</div>
 		<hr>
+		<div>param.record_cnt : ${param.record_cnt}</div>
+		<div>page : ${page}</div>
 		<div class="footer">
-			<div class="list"><a href="/board/list">목록</a></div>
+			<div class="list"><a href="/board/list?page=${param.page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}
+			">목록</a></div>
 			<c:if test="${loginUser.i_user == data.i_user}">
 				<div class="list1"><a href="/board/regmod?i_board=${data.i_board }&i_user=${data.i_user}">수정</a></div>
 				<form action="/board/del" method="post" id="delFrm">

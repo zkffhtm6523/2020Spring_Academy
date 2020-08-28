@@ -162,13 +162,16 @@ public class BoardDAO {
 		return param;
 	}
 	public static int selPagingCnt(final BoardVO param) {
-		String sql = " select ceil(count(i_board) / ?) from t_board4 ";
+		String sql = " select ceil(count(i_board) / ?) from t_board4 "
+					+ " where title like ? ";
 		
 		return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 			
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, param.getRecode_cnt());
+				ps.setInt(1, param.getRecord_cnt());
+				
+				ps.setNString(2, param.getSearchText());
 			}
 			@Override
 			//스칼라값 : 1행 1열만 있는 값
@@ -200,6 +203,7 @@ public class BoardDAO {
 					+ " from t_board4 A "
 					+ " inner join t_user B "
 					+ " on A.i_user = B.i_user "
+					+ " where A.title like ? "
 					+ " order by a.i_board desc "
 					+ " ) A "
 					+ " where rownum <= ? "
@@ -210,8 +214,9 @@ public class BoardDAO {
 
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, vo.getEldx());
-				ps.setInt(2, vo.getSldx());
+				ps.setNString(1, vo.getSearchText());
+				ps.setInt(2, vo.getEldx());
+				ps.setInt(3, vo.getSldx());
 			}
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {

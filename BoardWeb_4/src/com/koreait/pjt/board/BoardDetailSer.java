@@ -21,9 +21,6 @@ import com.koreait.pjt.vo.BoardCmtVO;
 import com.koreait.pjt.vo.BoardVO;
 import com.koreait.pjt.vo.UserVO;
 
-/**
- * Servlet implementation class BoardDetailSer
- */
 @WebServlet("/boardDetail")
 public class BoardDetailSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,15 +29,7 @@ public class BoardDetailSer extends HttpServlet {
 		UserVO loginUser = MyUtils.getLoginUser(request);
 
 		//로그인 안 되어 있을 시 로그인 페이지로 보냄
-		if(loginUser == null) {
-			response.sendRedirect("/login");
-			return;
-		}
-		if(request.getRemoteAddr().equals("192.168.2.15")) {
-			String ipben = request.getRemoteAddr();
-			response.sendRedirect("/ipben?ipben="+ipben);
-			return;
-		}else {
+		
 		//게시판 목록->상세화면으로 선택한 값의 i_boardf를 받아오고 vo에 값 저장
 		String strI_board = request.getParameter("i_board");
 		int i_board = Integer.parseInt(strI_board);
@@ -62,6 +51,7 @@ public class BoardDetailSer extends HttpServlet {
 		param.setLoginUser(loginUser.getI_user());
 		param = BoardDAO.likeDetailBoardList(param);
 		
+		
 		ArrayList<BoardVO> list = BoardDAO.likeListDetailBoardList(param);
 		
 		//댓글 내용 불러오기
@@ -81,4 +71,4 @@ public class BoardDetailSer extends HttpServlet {
 		ViewResolver.forward("board/detail", request, response);
 		}
 	}
-}
+

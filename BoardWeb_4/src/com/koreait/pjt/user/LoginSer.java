@@ -26,15 +26,15 @@ public class LoginSer extends HttpServlet {
 			response.sendRedirect("/board/list");
 			return;
 		}
-//		if(request.getRemoteAddr().equals("192.168.2.1")) {
-//			String ipben = request.getRemoteAddr();
-//			response.sendRedirect("/ipben?ipben="+ipben);
-//			return;
-//		}else {
+		if(request.getRemoteAddr().equals("192.168.2.4")) {
+			String ipben = request.getRemoteAddr();
+			response.sendRedirect("/ipben?ipben="+ipben);
+			return;
+		}else {
 			String fileNm = "user/login";
 			ViewResolver.forward(fileNm, request, response);
 			return;
-//		}
+		}
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//login의 form태그 name을 받아옴

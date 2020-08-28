@@ -13,7 +13,7 @@
 <style type="text/css">
 	.container{width: 1200px; margin: 0 auto; text-align: center;}
 	table{margin: 0 auto; margin-bottom: 20px;}
-	table, tr, th, td{border: 1px solid black; border-collapse: collapse;}
+	table, tr, th, td{border: 1px solid #ccc; border-collapse: collapse;}
 	th{padding: 10px; background-color: lightgray;}
 	th, td{width: 100px;}
 	h1{width: 240px;display: inline-block;}
@@ -37,12 +37,35 @@
 	<div class="container">
 		<div class="header">
 			<h3>${loginUser.user_id}님 환영합니다.</h3>
+			<a href="/profile">프로필</a>
 			<h1>게시판 리스트</h1>
 			<!-- /붙이고 안 붙이고 중요한 것은 /안붙이면 마지막 주소의 /만 바뀌고 붙인다 -->
 			<!-- /붙이면 localhost:8089에 /를 붙이고 시작한다.-->
 			<div class="regmod"><a href="regmod">글쓰기</a></div>
 			<div class="regmod"><a href="/logout">로그아웃</a></div>
 		</div>
+		<!-- 게시글 목록 수 -->
+		<div>
+			<form action="/board/list" id="selFrm" method="get">
+				<input type="hidden" name="page" value="${page}">
+				<input type="hidden" name="searchText" value="${param.searchText}">
+				레코드 수 : 
+				<select name="record_cnt" onchange="changeRecordCnt()">
+					<c:forEach begin="10" end="30" step="10" var="item">
+						<c:choose>
+							<c:when test="${recordCnt == item}">
+								<option value="${item}" selected>${item}개</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${item}">${item}개</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</form>
+		</div>
+		<div>param : ${param}</div>
+		<div>recordCnt : ${recordCnt}</div>
 		<table>
 			<colgroup>
 				<col width="9%"/>
@@ -60,9 +83,9 @@
 				<th>조회수</th>
 				<th>작성 날짜</th>
 			</tr>
-			<!-- items의 값을 el식으로 list 받아옴  var = 'item'은 item이라는 이름으로 pagecontext에 계속 박아줌 -->
+			<!-- 게시판 목록 -->
 			<c:forEach items="${list }" var="item">
-			   <tr class="itemRow" onclick="moveToDetail(${item.i_board})">
+			   <tr class="itemRow" onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}')">
 			      <td>${item.i_board}</td>
 			      <td>${item.i_user}</td>
 			      <td>${item.nm}</td>
@@ -72,34 +95,49 @@
 			   </tr>
 			</c:forEach>
 		</table>
-		<span class="material-icons" onclick="moveToBefore(${currentPage})">navigate_before</span>
+		<div>
+		<!-- 게시글 검색 -->
+			<form action="/board/list">
+				<input type="hidden" name="record_cnt" value="${recordCnt}">
+				<input type="hidden" name="page" value="${page}">
+				<input type="text" name="searchText" value="${searchText}">
+				<input type="submit" value="검색">
+			</form>
+		</div>
+		<!-- 게시판 페이지 수 -->
+		<span class="material-icons" onclick="moveToBefore(${page},${recordCnt},'${searchText}')">navigate_before</span>
 		<c:forEach var="item" begin="1" end="${pagingCnt}" step="1">
 			<c:choose>
-				<c:when test="${currentPage != item}">
-					<span ><a href="/board/list?page=${item}" class="elsePage">${item}</a></span>			
+				<c:when test="${page == item}">
+					<span id="currentPage">${item}</span>			
 				</c:when>
 				<c:otherwise>
-					<span id="currentPage">${item}</span>			
+					<span><a href="/board/list?page=${item}&&record_cnt=${param.record_cnt}&&searchText=${searchText}" class="elsePage">${item}</a></span>			
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
-		<span class="material-icons" onclick="moveToAfter(${currentPage},${pagingCnt})">navigate_next</span>
+		<span class="material-icons" onclick="moveToAfter(${page},${pagingCnt},${param.record_cnt},'${searchText}')">navigate_next</span>
 	</div>
 	<script>
-		function moveToDetail(i_board) {
-			location.href = '/boardDetail?i_board='+i_board
+		function moveToDetail(i_board, param, page,searchText) {
+			location.href = '/boardDetail?page='+page+'&record_cnt='+param+'&i_board='+i_board+'&searchText='+searchText
 		}
-		function moveToBefore(page) {
+		function moveToBefore(page, param,searchText) {
 			if(page >= 2){
+				param = param == undefined ? '' : param
 				var before = page - 1;
-				location.href = '/board/list?page='+before
+				location.href = '/board/list?page='+before+'&record_cnt='+param+'&searchText='+searchText
 			}
 		}
-		function moveToAfter(page,maxPage) {
+		function moveToAfter(page,maxPage, param,searchText) {
 			if(page < maxPage){
+				param = param == undefined ? '' : param
 				var after = page + 1;
-				location.href = '/board/list?page='+after
+				location.href = '/board/list?page='+after+'&record_cnt='+param+'&searchText='+searchText
 			}
+		}
+		function changeRecordCnt() {
+			selFrm.submit()
 		}
 	</script>
 </body>

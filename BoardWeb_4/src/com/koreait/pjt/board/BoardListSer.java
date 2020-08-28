@@ -31,28 +31,45 @@ public class BoardListSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
+		
+		//게시글 찾기 로직
+		String searchText = request.getParameter("searchText");
+		searchText = (searchText == null ? "" : searchText);
+		
+		//-----------------------------------------------------------
+		//페이지 숫자, 레코드 카운트(게시글 표시갯수) 받아오기
 		int page = MyUtils.getIntParameter(request, "page");
 		page = (page == 0 ? 1 : page);
 		
+		int recordCnt = MyUtils.getIntParameter(request, "record_cnt");
+		recordCnt = (recordCnt == 0 ? 10 : recordCnt);
+		//-----------------------------------------------------------
 		//댓글 카운트 구현
 		BoardCmtVO cmt = new BoardCmtVO();
 		cmt = BoardCmtDAO.selCountCmt(cmt);
 		
 		//페이지 표시할 갯수
-		BoardVO vo = new BoardVO();
-		vo.setRecode_cnt(Const.RECORD_CNT);
-		vo.setEldx(page*Const.RECORD_CNT);
-		vo.setSldx(vo.getEldx()-Const.RECORD_CNT);
+		BoardVO param = new BoardVO();
+		param.setRecord_cnt(recordCnt); //개시글 표시 갯수
+		param.setSearchText("%"+searchText+"%");
+		int pagingCnt = BoardDAO.selPagingCnt(param);
+		//이전 레코드수 값이 있고, 이전 레코드수보다 변경한 레코드 수가 더 크면 마지막 페이지 수로 변경
+		if(page > pagingCnt) {
+			page = pagingCnt; // 마지막 페이지 값으로 변경
+		}
+		request.setAttribute("page", page); 
+		
+		param.setEldx(page*recordCnt);
+		param.setSldx(param.getEldx()-recordCnt);
+		
+		//이전 다음 용
+		request.setAttribute("recordCnt", recordCnt);
+		//게시판 목록 최대 갯수
+		request.setAttribute("searchText", searchText);
+		request.setAttribute("pagingCnt", pagingCnt); // ok
+		request.setAttribute("list", BoardDAO.selBoardList(param)); // ok
 		
 		
-		//게시판 리스트 가져오기
-		List <BoardVO> list = BoardDAO.selBoardList(vo);
-		
-		//int값 반환
-		request.setAttribute("currentPage", page);
-		request.setAttribute("pagingCnt", BoardDAO.selPagingCnt(vo));
-		request.setAttribute("list", list);
-		String fileNm = "/board/list";
-		ViewResolver.forward(fileNm, request, response);
+		ViewResolver.forward("/board/list", request, response);
 	}
 }

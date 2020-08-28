@@ -13,9 +13,16 @@ public class BoardVO {
 	private int likeCount;
 	private int loginUser;
 	private int countCmt;
-	private int recode_cnt;
+	private int record_cnt;
 	private int eldx;
+	private String searchText;
 	
+	public String getSearchText() {
+		return searchText;
+	}
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
+	}
 	public int getEldx() {
 		return eldx;
 	}
@@ -31,11 +38,11 @@ public class BoardVO {
 	private int sldx;
 	
 	
-	public int getRecode_cnt() {
-		return recode_cnt;
+	public int getRecord_cnt() {
+		return record_cnt;
 	}
-	public void setRecode_cnt(int recode_cnt) {
-		this.recode_cnt = recode_cnt;
+	public void setRecord_cnt(int recode_cnt) {
+		this.record_cnt = recode_cnt;
 	}
 	public int getCountCmt() {
 		return countCmt;
