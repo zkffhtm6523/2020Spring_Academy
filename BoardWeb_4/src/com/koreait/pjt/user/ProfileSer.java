@@ -31,7 +31,7 @@ public class ProfileSer extends HttpServlet {
 	//이미지 변경 처리(무조건 무조건 post) 방식
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserVO loginUser = MyUtils.getLoginUser(request);
-		//어플리케이션 호출. 절대 경로
+		//어플리케이션 호출. 절대 경로..이거 때문에 
 		String savePath = getServletContext().getRealPath("img") + "/user/" + loginUser.getI_user(); //저장경로
 		System.out.println("savePath : "+savePath);
 		
