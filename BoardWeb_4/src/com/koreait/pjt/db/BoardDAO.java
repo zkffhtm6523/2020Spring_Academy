@@ -128,11 +128,11 @@ public class BoardDAO {
 	}
 	
 	public static BoardVO selDetailBoardList(BoardVO param) {
-	String sql = " select t_board4.title, TO_CHAR(t_board4.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt , t_board4.hits, t_board4.ctnt, t_user.nm, t_user.i_user "
-				+" from t_board4 "
-				+" inner join t_user "
-				+" on t_board4.i_user = t_user.i_user "
-				+" where t_board4.i_board = "+param.getI_board();
+	String sql = " select A.title, TO_CHAR(A.r_dt, 'YYYY/MM/DD HH24:MI') as r_dt , A.hits, A.ctnt, B.nm, B.i_user, B.profile_img "
+				+" from t_board4 A "
+				+" inner join t_user B "
+				+" on A.i_user = B.i_user "
+				+" where A.i_board = "+param.getI_board();
 	
 	JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 		
@@ -148,6 +148,7 @@ public class BoardDAO {
 				String ctnt = rs.getNString("ctnt");
 				int hits = rs.getInt("hits");
 				int i_user = rs.getInt("i_user");
+				String profile_img = rs.getNString("profile_img");
 				
 				param.setTitle(title);
 				param.setNm(nm);
@@ -155,6 +156,7 @@ public class BoardDAO {
 				param.setCtnt(ctnt);
 				param.setHits(hits);
 				param.setI_user(i_user);
+				param.setProfile_img(profile_img);
 			}
 			return 1;
 		}
@@ -194,21 +196,17 @@ public class BoardDAO {
 //				+ " inner join t_user B "
 //				+ " on A.i_user = B.i_user "
 //				+ " order by a.i_board desc ";
-		String sql = " select * from " 
-					+ " ( "
-					+ " select rownum as rnum, A.* from "
-					+ " ( "
-					+ " select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm, "
+		String sql = " select * from( "
+					+ " select rownum as rnum, A.* from ( "
+					+ " select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm, B.profile_img, "
 					+ " (select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt "
 					+ " from t_board4 A "
 					+ " inner join t_user B "
 					+ " on A.i_user = B.i_user "
 					+ " where A.title like ? "
 					+ " order by a.i_board desc "
-					+ " ) A "
-					+ " where rownum <= ? "
-					+ " )A "
-					+ " where A.rnum > ? ";
+					+ " ) A where rownum <= ? "
+					+ " )A where A.rnum > ? ";
 		
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
@@ -228,6 +226,8 @@ public class BoardDAO {
 					int hits = rs.getInt("hits");
 					String nm = rs.getNString("nm");
 					int countCmt = rs.getInt("countCmt"); 
+					String profile_img = rs.getNString("profile_img");
+					
 					
 					BoardVO vo = new BoardVO();
 					vo.setI_board(i_board);
@@ -237,7 +237,9 @@ public class BoardDAO {
 					vo.setR_dt(r_dt);
 					vo.setNm(nm);
 					vo.setCountCmt(countCmt);
+					vo.setProfile_img(profile_img);
 					list.add(vo);
+					System.out.println("프로필 이미지 :"+vo.getProfile_img());
 				}
 				return 1;
 			}			

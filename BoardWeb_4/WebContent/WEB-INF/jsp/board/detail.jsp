@@ -45,7 +45,8 @@
 	td{padding: 10px;}
 	.btn{color: blue;}
 	.btn:hover {cursor:pointer;}
-	
+	.containerPImg {display: inline-block;width: 30px;height: 30px;border-radius: 50%;overflow: hidden;}
+	.pImg {object-fit: cover;max-width:100%;}
 }
 </style>
 </head>
@@ -55,6 +56,18 @@
 	<hr class="hr1">
 		<div class="h3title"><h3>${data.title}</h3></div>
 		<ul>
+			<li>
+			<div class="containerPImg">
+				<c:choose>
+					<c:when test="${data.profile_img != null}">
+						<img class="pImg" src="/img/user/${data.i_user}/${data.profile_img}">
+					</c:when>
+					<c:otherwise>
+						<img class="pImg" src="/img/default_profile.jpg">
+					</c:otherwise>
+				</c:choose>
+			</div>
+			</li>
 			<li>${data.nm}&nbsp;&nbsp;&nbsp;|</li>
 			<li>${data.r_dt}&nbsp;&nbsp;&nbsp;|</li>
 			<li>조회수&nbsp;[${data.hits}] |</li>

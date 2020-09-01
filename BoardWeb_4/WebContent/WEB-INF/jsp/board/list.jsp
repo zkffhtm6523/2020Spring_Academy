@@ -31,6 +31,19 @@
 	.material-icons:hover{
 		cursor:pointer;
 	}
+		.containerPImg {
+		display: inline-block;	
+		width: 30px;
+		height: 30px;
+	    border-radius: 50%;
+	    overflow: hidden;
+	}
+	
+	.pImg {
+	
+		 object-fit: cover;
+		  max-width:100%;
+	}
 </style>
 </head>
 <body>
@@ -88,6 +101,19 @@
 			   <tr class="itemRow" onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}')">
 			      <td>${item.i_board}</td>
 			      <td>${item.i_user}</td>
+		      	  <td>
+						<div class="containerPImg">
+							<c:choose>
+								<c:when test="${item.profile_img != null}">
+									<img class="pImg" src="/img/user/${item.i_user}/${item.profile_img}">
+								</c:when>
+								<c:otherwise>
+									<img class="pImg" src="/img/default_profile.jpg">
+								</c:otherwise>
+							</c:choose>
+						</div>
+						${item.nm}
+					</td>
 			      <td>${item.nm}</td>
 			      <td>${item.title}&nbsp;&nbsp;<span class="cmt">${item.countCmt == 0 ? '' : [item.countCmt]}</span></td>
 			      <td>${item.hits}</td>
