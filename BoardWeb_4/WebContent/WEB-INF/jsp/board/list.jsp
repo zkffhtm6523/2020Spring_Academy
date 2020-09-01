@@ -31,18 +31,16 @@
 	.material-icons:hover{
 		cursor:pointer;
 	}
-		.containerPImg {
-		display: inline-block;	
-		width: 30px;
-		height: 30px;
-	    border-radius: 50%;
-	    overflow: hidden;
+	.containerPImg {
+	display: inline-block;	
+	width: 30px;
+	height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
 	}
-	
 	.pImg {
-	
-		 object-fit: cover;
-		  max-width:100%;
+	 object-fit: cover;
+     max-width:100%;
 	}
 </style>
 </head>
@@ -77,14 +75,13 @@
 				</select>
 			</form>
 		</div>
-		<div>param : ${param}</div>
-		<div>recordCnt : ${recordCnt}</div>
 		<table>
 			<colgroup>
 				<col width="9%"/>
 				<col width="8%"/>
 				<col width="15%">
-				<col width="35%"/>
+				<col width="23%"/>
+				<col width="10%"/>
 				<col width="10%"/>
 				<col width="25%"/>
 			</colgroup>
@@ -94,6 +91,7 @@
 				<th>유저명</th>
 				<th>제목</th>
 				<th>조회수</th>
+				<th>좋아요</th>
 				<th>작성 날짜</th>
 			</tr>
 			<!-- 게시판 목록 -->
@@ -114,9 +112,9 @@
 						</div>
 						${item.nm}
 					</td>
-			      <td>${item.nm}</td>
 			      <td>${item.title}&nbsp;&nbsp;<span class="cmt">${item.countCmt == 0 ? '' : [item.countCmt]}</span></td>
 			      <td>${item.hits}</td>
+			      <td>${item.likeCount}</td>
 			      <td>${item.r_dt}</td>
 			   </tr>
 			</c:forEach>

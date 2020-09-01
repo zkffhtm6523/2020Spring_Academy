@@ -13,7 +13,7 @@ public class BoardDAO {
 
 	public static ArrayList<BoardVO> likeListDetailBoardList(BoardVO param) {
 		ArrayList<BoardVO> list = new ArrayList<BoardVO>();
-		String sql = " select b.nm, A.i_user "
+		String sql = " select b.nm, B.profile_img, A.i_user "
 				+ " from t_board4_like A "
 				+ " inner join t_user B "
 				+ " on A.i_user = B.i_user "
@@ -31,7 +31,12 @@ public class BoardDAO {
 				while (rs.next()) {
 					BoardVO vo = new BoardVO();
 					String nm = rs.getNString("nm");
+					String profile_img = rs.getNString("profile_img");
+					int i_user = rs.getInt("i_user");
+					System.out.println("좋아요 한 사람 : "+profile_img);	
 					vo.setNm(nm);
+					vo.setProfile_img(profile_img);
+					vo.setI_user(i_user);
 					list.add(vo);
 				}
 				return 1;
@@ -186,27 +191,22 @@ public class BoardDAO {
 		});
 	}
 	
-	
-	
 	public static List<BoardVO> selBoardList(BoardVO vo) {
 		List<BoardVO> list = new ArrayList<BoardVO>();
-//		String sql = " select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm,  "
-//				 + " (select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt "
-//				+ " from t_board4 A "
-//				+ " inner join t_user B "
-//				+ " on A.i_user = B.i_user "
-//				+ " order by a.i_board desc ";
-		String sql = " select * from( "
-					+ " select rownum as rnum, A.* from ( "
-					+ " select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm, B.profile_img, "
-					+ " (select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt "
-					+ " from t_board4 A "
-					+ " inner join t_user B "
-					+ " on A.i_user = B.i_user "
-					+ " where A.title like ? "
-					+ " order by a.i_board desc "
-					+ " ) A where rownum <= ? "
-					+ " )A where A.rnum > ? ";
+		String sql = " select * from " + 
+					" (select * from " + 
+					"    (select rownum as rnum, A.* from " + 
+					"        (select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm, B.profile_img, " + 
+					"		(select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt " + 
+					"        from t_board4 A " + 
+					"        inner join t_user B " + 
+					"        on A.i_user = B.i_user " + 
+					"        where A.title like ? " + 
+					"        order by a.i_board desc) A " + 
+					"    where rownum <= ?) A " + 
+					" where A.rnum > ?) A " + 
+					" left join (select i_board, count(*) as countlike from t_board4_like group by i_board) B " + 
+					" on A.i_board = B.i_board ";
 		
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
@@ -227,6 +227,7 @@ public class BoardDAO {
 					String nm = rs.getNString("nm");
 					int countCmt = rs.getInt("countCmt"); 
 					String profile_img = rs.getNString("profile_img");
+					int countLike = rs.getInt("countLike");
 					
 					
 					BoardVO vo = new BoardVO();
@@ -238,6 +239,7 @@ public class BoardDAO {
 					vo.setNm(nm);
 					vo.setCountCmt(countCmt);
 					vo.setProfile_img(profile_img);
+					vo.setLikeCount(countLike);
 					list.add(vo);
 					System.out.println("프로필 이미지 :"+vo.getProfile_img());
 				}
@@ -273,6 +275,6 @@ public class BoardDAO {
 			public void update(PreparedStatement ps) throws SQLException {}
 		});
 	}
-
+	
 
 }

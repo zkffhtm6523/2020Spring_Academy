@@ -45,8 +45,8 @@ public class BoardRegModSer extends HttpServlet {
 		
 		BoardVO param = new BoardVO();
 		
-		param.setTitle(title);
-		param.setCtnt(ctnt);
+		param.setTitle(swearWordFilter(imgFilter(scriptFilter(title))));
+		param.setCtnt(swearWordFilter(imgFilter(scriptFilter(ctnt))));
 		
 		//글쓰기
 		if(request.getParameter("i_user") == "") {
@@ -61,6 +61,42 @@ public class BoardRegModSer extends HttpServlet {
 			BoardDAO.uptDetailBoardList(param);
 			response.sendRedirect("/boardDetail?i_board="+i_board);
 		}
+	}
+	//스크립트 필터(게시글 테러)
+	private String scriptFilter(final String ctnt) {
+		//필터링 필요한 스크립트 필터 매개변수로 받아옴
+		String[] filters = {"<script>","</script>"};
+		
+		//스크립트 태그 들어왔을 때 이렇게 바꿔줌
+		String[] filterResults = {"&lt;script&gt;","&lt;/script&gt;"};
+		
+		String result = ctnt;
+		for (int i = 0; i < filterResults.length; i++) {
+			result = result.replace(filters[i], filterResults[i]);
+		}
+		return result;
+	}
+	//이미지 필터(게시글 테러)
+	private String imgFilter(final String ctnt) {
+		//필터링 필요한 스크립트 필터 매개변수로 받아옴
+		String[] filters = {"<img",">"};
+		
+		//스크립트 태그 들어왔을 때 이렇게 바꿔줌
+		String[] filterResults = {"&lt;<img&gt","&lt;>&gt;"};
+		
+		String result = ctnt;
+		for (int i = 0; i < filterResults.length; i++) {
+			result = result.replace(filters[i], filterResults[i]);
+		}
+		return result;
+	}
+	private String swearWordFilter(final String ctnt) {
+		String [] filters = {"개새끼","미친년","ㄱ ㅐ ㅅ ㅐ ㄲ ㅣ"};
+		String result = ctnt;
+		for (int i = 0; i < filters.length; i++) {
+			result = result.replace(filters[i], "***");
+		}
+		return ctnt;
 	}
 
 }

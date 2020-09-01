@@ -69,7 +69,6 @@ public class BoardListSer extends HttpServlet {
 		request.setAttribute("pagingCnt", pagingCnt); // ok
 		request.setAttribute("list", BoardDAO.selBoardList(param)); // ok
 		
-		
 		ViewResolver.forward("/board/list", request, response);
 	}
 }

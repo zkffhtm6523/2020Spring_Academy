@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript"></script>
 <title>Insert title here</title>
 <style>
 	
@@ -24,5 +25,6 @@
 	
 	body 이제 스크립트 밑에 넣는 것은 표준이 아니다
  -->
+ <div class="footer"></div>
 </body>
 </html>

@@ -84,7 +84,18 @@
 		<div class="likeList">
 			<span class="text1">좋아요 리스트 : </span>
 			<c:forEach items="${list }" var="item">
-				<span>${item.nm} |</span>
+				<span>
+				<div class="containerPImg">
+				<c:choose>
+					<c:when test="${item.profile_img != null}">
+						<img class="pImg" src="/img/user/${item.i_user}/${item.profile_img}">
+					</c:when>
+					<c:otherwise>
+						<img class="pImg" src="/img/default_profile.jpg">
+					</c:otherwise>
+				</c:choose>
+				</div>
+				${item.nm} |</span>
 			</c:forEach>
 		</div>
 		<hr>
