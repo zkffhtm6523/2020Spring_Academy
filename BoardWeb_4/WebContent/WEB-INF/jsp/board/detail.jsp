@@ -47,6 +47,7 @@
 	.btn:hover {cursor:pointer;}
 	.containerPImg {display: inline-block;width: 30px;height: 30px;border-radius: 50%;overflow: hidden;}
 	.pImg {object-fit: cover;max-width:100%;}
+	.highlight{color: red;font-weight: bold;}
 }
 </style>
 </head>
@@ -176,7 +177,11 @@
 					location.href="/board/cmt?i_cmt="+i_cmt+"&i_board=${data.i_board}"
 				}
 			}
-			
+			function doHighlight() {
+				var searchText = '${param.searchText}'
+				var searchtype = '${param.searchType}'
+				
+			}
 		</script>
 	</div>
 </body>

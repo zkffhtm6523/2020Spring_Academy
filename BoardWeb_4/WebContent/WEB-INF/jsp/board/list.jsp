@@ -39,8 +39,13 @@
     overflow: hidden;
 	}
 	.pImg {
-	 object-fit: cover;
-     max-width:100%;
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
+	}
+	.highlight{
+	color: red;
+	font-weight: bold;
 	}
 </style>
 </head>
@@ -80,10 +85,11 @@
 				<col width="9%"/>
 				<col width="8%"/>
 				<col width="15%">
+				<col width="20%"/>
+				<col width="9%"/>
+				<col width="9%"/>
+				<col width="9%"/>
 				<col width="23%"/>
-				<col width="10%"/>
-				<col width="10%"/>
-				<col width="25%"/>
 			</colgroup>
 			<tr>
 				<th>게시판 번호</th>
@@ -92,11 +98,12 @@
 				<th>제목</th>
 				<th>조회수</th>
 				<th>좋아요</th>
-				<th>작성 날짜</th>
+				<th>체크</th>
+				<th>작성일</th>
 			</tr>
 			<!-- 게시판 목록 -->
 			<c:forEach items="${list }" var="item">
-			   <tr class="itemRow" onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}')">
+			   <tr class="itemRow" onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}','${searchType}')">
 			      <td>${item.i_board}</td>
 			      <td>${item.i_user}</td>
 		      	  <td>
@@ -115,6 +122,14 @@
 			      <td>${item.title}&nbsp;&nbsp;<span class="cmt">${item.countCmt == 0 ? '' : [item.countCmt]}</span></td>
 			      <td>${item.hits}</td>
 			      <td>${item.likeCount}</td>
+			      <td>
+					<c:if test="${item.me_like == 0 }">
+						<span class="material-icons">favorite_border</span>                	
+					</c:if>
+					<c:if test="${item.me_like == 1}">
+						<span class="material-icons" style="color: red;">favorite</span>
+					</c:if>
+				  </td>
 			      <td>${item.r_dt}</td>
 			   </tr>
 			</c:forEach>
@@ -122,9 +137,14 @@
 		<div>
 		<!-- 게시글 검색 -->
 			<form action="/board/list">
+				<select name="searchType">
+					<option value="a" ${searchType == 'a' ? 'selected': ''}>제목</option>
+					<option value="b" ${searchType == 'b' ? 'selected': ''}>내용</option>
+					<option value="c" ${searchType == 'c' ? 'selected': ''}>제목+내용</option>
+				</select>
 				<input type="hidden" name="record_cnt" value="${recordCnt}">
 				<input type="hidden" name="page" value="${page}">
-				<input type="text" name="searchText" value="${searchText}">
+				<input type="search" name="searchText" value="${searchText}">
 				<input type="submit" value="검색">
 			</form>
 		</div>
@@ -143,8 +163,9 @@
 		<span class="material-icons" onclick="moveToAfter(${page},${pagingCnt},${param.record_cnt},'${searchText}')">navigate_next</span>
 	</div>
 	<script>
-		function moveToDetail(i_board, param, page,searchText) {
+		function moveToDetail(i_board, param, page,searchText, searchType) {
 			location.href = '/boardDetail?page='+page+'&record_cnt='+param+'&i_board='+i_board+'&searchText='+searchText
+							+'&searchType='+searchType
 		}
 		function moveToBefore(page, param,searchText) {
 			if(page >= 2){

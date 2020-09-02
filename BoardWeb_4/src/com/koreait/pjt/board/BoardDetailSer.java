@@ -34,6 +34,14 @@ public class BoardDetailSer extends HttpServlet {
 		BoardVO param = new BoardVO();
 		param.setI_board(i_board);
 		
+		//게시글 찾기 로직
+		String searchText = request.getParameter("searchText");
+		searchText = (searchText == null ? "" : searchText);
+		
+		//제목, 제목+내용 찾기 기능
+		String searchType = request.getParameter("searchType");
+		searchType = (searchType == null) ? "a" : searchType;
+		
 		//application 받아오기 -> application에 속성값 받아줌(초기에는 null이 들어감)
 		ServletContext application = getServletContext();
 		Integer readI_user = (Integer)application.getAttribute("read_"+strI_board);
@@ -46,8 +54,19 @@ public class BoardDetailSer extends HttpServlet {
 			application.setAttribute("read_"+strI_board, loginUser.getI_user());
 		}
 		param = BoardDAO.selDetailBoardList(param);
+		if(!"".equals(searchText) && ("a".equals(searchType) || "b".equals(searchType) || "c".equals(searchType))) {
+			String title = param.getTitle();
+			String ctnt = param.getCtnt();
+			title = title.replace(searchText
+					, "<span class=\"highlight\">" + searchText +"</span>");
+			ctnt = ctnt.replace(searchText
+					, "<span class=\"highlight\">" + searchText +"</span>");
+			param.setTitle(title);
+			param.setCtnt(ctnt);
+		}
 		param.setLoginUser(loginUser.getI_user());
 		param = BoardDAO.likeDetailBoardList(param);
+		
 		
 		
 		ArrayList<BoardVO> list = BoardDAO.likeListDetailBoardList(param);

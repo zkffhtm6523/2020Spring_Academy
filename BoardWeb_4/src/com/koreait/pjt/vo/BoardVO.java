@@ -16,8 +16,16 @@ public class BoardVO {
 	private int countCmt;
 	private int record_cnt;
 	private int eldx;
+	private int me_like;
 	private String searchText;
+	private String searchType;
 	
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
 	public String getSearchText() {
 		return searchText;
 	}
@@ -122,5 +130,11 @@ public class BoardVO {
 	}
 	public void setProfile_img(String profile_img) {
 		this.profile_img = profile_img;
+	}
+	public int getMe_like() {
+		return me_like;
+	}
+	public void setMe_like(int me_like) {
+		this.me_like = me_like;
 	}
 }

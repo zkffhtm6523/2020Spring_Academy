@@ -8,15 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.koreait.pjt.Const;
 import com.koreait.pjt.MyUtils;
 import com.koreait.pjt.ViewResolver;
 import com.koreait.pjt.db.BoardCmtDAO;
 import com.koreait.pjt.db.BoardDAO;
 import com.koreait.pjt.vo.BoardCmtVO;
 import com.koreait.pjt.vo.BoardVO;
+import com.koreait.pjt.vo.UserVO;
 
 @WebServlet("/board/list")
 public class BoardListSer extends HttpServlet {
@@ -26,11 +25,14 @@ public class BoardListSer extends HttpServlet {
 		//매개변수에 request가 있고 넘어오고, 넘겨주니까 이것을 바로 씀.
 		//session은 받아오는 것이 없으니까 request로 getSession으로 받아와야함
 		//pageContext는 서블릿이 아닌 jsp파일에서 사용할 수 있음.
-		HttpSession hs = request.getSession();
-		if(hs.getAttribute(Const.LOGIN_USER) == null) {
+		UserVO loginUser = MyUtils.getLoginUser(request);
+		if(loginUser == null) {
 			response.sendRedirect("/login");
 			return;
 		}
+		//제목, 제목+내용 찾기 기능
+		String searchType = request.getParameter("searchType");
+		searchType = (searchType == null) ? "a" : searchType;
 		
 		//게시글 찾기 로직
 		String searchText = request.getParameter("searchText");
@@ -51,6 +53,7 @@ public class BoardListSer extends HttpServlet {
 		//페이지 표시할 갯수
 		BoardVO param = new BoardVO();
 		param.setRecord_cnt(recordCnt); //개시글 표시 갯수
+		param.setSearchType(searchType); //게시글 검색 타입
 		param.setSearchText("%"+searchText+"%");
 		int pagingCnt = BoardDAO.selPagingCnt(param);
 		//이전 레코드수 값이 있고, 이전 레코드수보다 변경한 레코드 수가 더 크면 마지막 페이지 수로 변경
@@ -61,13 +64,27 @@ public class BoardListSer extends HttpServlet {
 		
 		param.setEldx(page*recordCnt);
 		param.setSldx(param.getEldx()-recordCnt);
+		param.setLoginUser(loginUser.getI_user());
+		
+		List<BoardVO> list = BoardDAO.selBoardList(param);
+		//하이라이트 처리
+		if(!"".equals(searchText) && ("a".equals(searchType) || "c".equals(searchType))) {
+			for(BoardVO item : list) {
+				String title = item.getTitle();
+				title = title.replace(searchText
+						, "<span class=\"highlight\">" + searchText +"</span>");
+				item.setTitle(title);
+			}
+		}
+		request.setAttribute("list", list); // ok
+		
 		
 		//이전 다음 용
 		request.setAttribute("recordCnt", recordCnt);
 		//게시판 목록 최대 갯수
 		request.setAttribute("searchText", searchText);
 		request.setAttribute("pagingCnt", pagingCnt); // ok
-		request.setAttribute("list", BoardDAO.selBoardList(param)); // ok
+		request.setAttribute("searchType", searchType);
 		
 		ViewResolver.forward("/board/list", request, response);
 	}

@@ -193,28 +193,47 @@ public class BoardDAO {
 	
 	public static List<BoardVO> selBoardList(BoardVO vo) {
 		List<BoardVO> list = new ArrayList<BoardVO>();
-		String sql = " select * from " + 
-					" (select * from " + 
-					"    (select rownum as rnum, A.* from " + 
-					"        (select A.i_board, A.title, A.r_dt, A.i_user, A.hits, B.nm, B.profile_img, " + 
-					"		(select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt " + 
-					"        from t_board4 A " + 
-					"        inner join t_user B " + 
-					"        on A.i_user = B.i_user " + 
-					"        where A.title like ? " + 
-					"        order by a.i_board desc) A " + 
-					"    where rownum <= ?) A " + 
-					" where A.rnum > ?) A " + 
+		String sql = " select A.*,DECODE(B.i_board, null, 0, 1) as me_like from( " + 
+					" select A.*,B.countLike from " + 
+					"    (select * from " + 
+					"        (select rownum as rnum, A.* from " + 
+					"            (select A.i_board, A.title, A.r_dt, A.i_user, A.hits, A.ctnt, B.nm, B.profile_img, " + 
+					"            (select count(*) as countall from t_board4_cmt group by i_board HAVING i_board = A.i_board) as countCmt " + 
+					"            from t_board4 A " + 
+					"            inner join t_user B " + 
+					"            on A.i_user = B.i_user " + 
+					"            where ";
+					switch(vo.getSearchType()) {
+					case "a":					
+						sql += " A.title like ? ";
+						break;
+					case "b":
+						sql += " A.ctnt like ? ";
+						break;
+					case "c":
+						sql += " (A.ctnt like ? or A.title like ?) ";
+						break;
+					}
+					sql += "            order by a.i_board desc) A " + 
+					"        where rownum <= ?) A " + 
+					"    where A.rnum > ?) A " + 
 					" left join (select i_board, count(*) as countlike from t_board4_like group by i_board) B " + 
-					" on A.i_board = B.i_board ";
+					" on A.i_board = B.i_board) A " + 
+					" left join (select i_board from t_board4_like where i_user = ?) B " + 
+					" ON A.i_board = B.i_board ";
 		
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setNString(1, vo.getSearchText());
-				ps.setInt(2, vo.getEldx());
-				ps.setInt(3, vo.getSldx());
+				int seq = 1;
+				ps.setNString(seq, vo.getSearchText());
+				if(vo.getSearchType().equals("c")) {
+					ps.setNString(++seq, vo.getSearchText());
+				}
+				ps.setInt(++seq, vo.getEldx());
+				ps.setInt(++seq, vo.getSldx());
+				ps.setInt(++seq, vo.getLoginUser());
 			}
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {
@@ -228,7 +247,7 @@ public class BoardDAO {
 					int countCmt = rs.getInt("countCmt"); 
 					String profile_img = rs.getNString("profile_img");
 					int countLike = rs.getInt("countLike");
-					
+					int me_like = rs.getInt("me_like");
 					
 					BoardVO vo = new BoardVO();
 					vo.setI_board(i_board);
@@ -240,8 +259,8 @@ public class BoardDAO {
 					vo.setCountCmt(countCmt);
 					vo.setProfile_img(profile_img);
 					vo.setLikeCount(countLike);
+					vo.setMe_like(me_like);
 					list.add(vo);
-					System.out.println("프로필 이미지 :"+vo.getProfile_img());
 				}
 				return 1;
 			}			
