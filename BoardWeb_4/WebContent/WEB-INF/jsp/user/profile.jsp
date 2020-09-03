@@ -14,6 +14,8 @@
 <body>
 	<div class="container">
 		<h1>프로필</h1>
+		<div><a href="/board/list"><button>목록 가기</button></a></div>
+		<div><a href="/changePw"><button>비밀번호 변경</button></a></div>
 		<div>User_ID : ${data.user_id}</div>
 		<div>이름 : ${data.nm }</div>
 		<div>이메일 : ${data.email}</div>
@@ -40,4 +42,13 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	var proc = '${param.proc}'
+	
+	switch (proc) {
+	case '1':
+		alert('비밀번호를 변경하였습니다.')
+		break;
+	}
+</script>
 </html>

@@ -39,7 +39,7 @@
 			frm.user_id.focus()
 			return false
 		} 
-		if(frm.user_pw.value.length < 8){
+		if(frm.user_pw.value.length < 6){
 			alert('비밀번호는 8글자 이상이 되어야합니다.')
 			frm.user_pw.focus()
 			return false

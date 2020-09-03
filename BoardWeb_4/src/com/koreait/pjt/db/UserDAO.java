@@ -106,7 +106,7 @@ public class UserDAO {
 		return result;
 	}
 	public static int updUser(UserVO param) {
-StringBuilder sb = new StringBuilder(" UPDATE t_user SET m_dt = sysdate");
+		StringBuilder sb = new StringBuilder(" UPDATE t_user SET m_dt = sysdate");
 		
 		if(param.getUser_pw() != null) {
 			sb.append(" , user_pw = '");
@@ -139,6 +139,5 @@ StringBuilder sb = new StringBuilder(" UPDATE t_user SET m_dt = sysdate");
 			}
 		});
 	}
-	
 	
 }

@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>상세보기 페이지</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style type="text/css">
 	body{background: lightgray;}
@@ -46,8 +47,19 @@
 	.btn{color: blue;}
 	.btn:hover {cursor:pointer;}
 	.containerPImg {display: inline-block;width: 30px;height: 30px;border-radius: 50%;overflow: hidden;}
-	.pImg {object-fit: cover;max-width:100%;}
+	.pImg {object-fit: cover;height: 100%;width: 100%;}
 	.highlight{color: red;font-weight: bold;}
+	#likeList{
+	width: 180px;
+	opacity: 0;
+	position: absolute;
+	left: 600px;
+	top: 200px;
+	height: 200px;
+	overflow-y: auto;
+	background-color: lightgray;
+	transition-duration : 500ms;
+	}
 }
 </style>
 </head>
@@ -72,20 +84,19 @@
 			<li>${data.nm}&nbsp;&nbsp;&nbsp;|</li>
 			<li>${data.r_dt}&nbsp;&nbsp;&nbsp;|</li>
 			<li>조회수&nbsp;[${data.hits}] |</li>
-			<li id="like" onclick="toggleLike(${data.yn_like})">
+			<li id="like" onclick="toggleLike(${data.yn_like})" onmouseover="showList()" onmouseout="closeList()">
 				<c:if test="${data.yn_like == 0 }">
-					<span class="material-icons">favorite_border</span>
+					<span class="material-icons" id="icon">favorite_border</span>
 				</c:if>
 				<c:if test="${data.yn_like == 1 }">
-					<span class="material-icons">favorite</span>
+					<span class="material-icons" id="icon">favorite</span>
 				</c:if>
 			</li>
 			<li>[${data.likeCount}] |</li>
 		</ul>
-		<div class="likeList">
-			<span class="text1">좋아요 리스트 : </span>
+		<!-- 좋아요 한 사람 및 이미지 출력 -->
+		<div class="likeList" id="likeList">
 			<c:forEach items="${list }" var="item">
-				<span>
 				<div class="containerPImg">
 				<c:choose>
 					<c:when test="${item.profile_img != null}">
@@ -96,17 +107,14 @@
 					</c:otherwise>
 				</c:choose>
 				</div>
-				${item.nm} |</span>
+				${item.nm}<br>
 			</c:forEach>
 		</div>
 		<hr>
 		<div class="ctnt">${data.ctnt}</div>
 		<hr>
-		<div>param.record_cnt : ${param.record_cnt}</div>
-		<div>page : ${page}</div>
 		<div class="footer">
-			<div class="list"><a href="/board/list?page=${param.page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}
-			">목록</a></div>
+			<div class="list"><a href="/board/list?page=${param.page}&record_cnt=${param.record_cnt}&searchText=${param.searchText}">목록</a></div>
 			<c:if test="${loginUser.i_user == data.i_user}">
 				<div class="list1"><a href="/board/regmod?i_board=${data.i_board }&i_user=${data.i_user}">수정</a></div>
 				<form action="/board/del" method="post" id="delFrm">
@@ -181,6 +189,17 @@
 				var searchText = '${param.searchText}'
 				var searchtype = '${param.searchType}'
 				
+			}
+			function showList() {
+				if(likeList.style.opacity == 1){
+					likeList.style.opacity = 0;
+					likeList.style.zIndex = 0;	
+				}else{
+					likeList.style.opacity = 1;
+					likeList.style.zIndex = 100;
+				}
+			}
+			function closeList() {
 			}
 		</script>
 	</div>
