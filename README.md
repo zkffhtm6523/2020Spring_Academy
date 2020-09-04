@@ -19,4 +19,5 @@
 &lt;</dependency>
 </pre>
 
-          
+FrameWork : 호출을 당함
+Library : 내가 호출을 함
