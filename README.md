@@ -13,3 +13,5 @@
 
 FrameWork : 호출을 당함
 Library : 내가 호출을 함
+<br>
+4.  Ajax 방식 2개 : 쿼리스트링 or 자바스크립트 
