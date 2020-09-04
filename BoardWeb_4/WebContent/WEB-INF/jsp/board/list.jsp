@@ -40,13 +40,24 @@
 	}
 	.pImg {
 	object-fit: cover;
-	height: 100%;
-	width: 100%;
+	height: 30px;
+	width: 30px;
 	}
 	.highlight{
 	color: red;
 	font-weight: bold;
 	}
+	#likeListContainer {
+	  opacity:0;
+      position: absolute;
+      left: 1000px;
+      top: 260px;
+      width: 130px;
+      height: 300px;
+      overflow-y: auto;
+      background-color: white;
+      z-index: 100;
+   }
 </style>
 </head>
 <body>
@@ -60,6 +71,7 @@
 			<div class="regmod"><a href="regmod">글쓰기</a></div>
 			<div class="regmod"><a href="/logout">로그아웃</a></div>
 		</div>
+		<div id="likeListContainer"></div>
 		<!-- 게시글 목록 수 -->
 		<div>
 			<form action="/board/list" id="selFrm" method="get">
@@ -103,25 +115,25 @@
 			</tr>
 			<!-- 게시판 목록 -->
 			<c:forEach items="${list }" var="item">
-			   <tr class="itemRow" onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}','${searchType}')">
-			      <td>${item.i_board}</td>
-			      <td>${item.i_user}</td>
+			   <tr class="itemRow">
+			      <td onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}','${searchType}')">${item.i_board}</td>
+			      <td onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}','${searchType}')">${item.i_user}</td>
 		      	  <td>
-						<div class="containerPImg">
-							<c:choose>
-								<c:when test="${item.profile_img != null}">
-									<img class="pImg" src="/img/user/${item.i_user}/${item.profile_img}">
-								</c:when>
-								<c:otherwise>
-									<img class="pImg" src="/img/default_profile.jpg">
-								</c:otherwise>
-							</c:choose>
-						</div>
-						${item.nm}
-					</td>
-			      <td>${item.title}&nbsp;&nbsp;<span class="cmt">${item.countCmt == 0 ? '' : [item.countCmt]}</span></td>
+					<div class="containerPImg">
+						<c:choose>
+							<c:when test="${item.profile_img != null}">
+								<img class="pImg" src="/img/user/${item.i_user}/${item.profile_img}">
+							</c:when>
+							<c:otherwise>
+								<img class="pImg" src="/img/default_profile.jpg">
+							</c:otherwise>
+						</c:choose>
+					</div>
+					${item.nm}
+				 </td>
+			      <td onclick="moveToDetail(${item.i_board},${recordCnt},${page},'${searchText}','${searchType}')">${item.title}&nbsp;&nbsp;<span class="cmt">${item.countCmt == 0 ? '' : [item.countCmt]}</span></td>
 			      <td>${item.hits}</td>
-			      <td>${item.likeCount}</td>
+			      <td onclick="getLikeList(${item.i_board}, ${item.likeCount})">${item.likeCount}</td>
 			      <td>
 					<c:if test="${item.me_like == 0 }">
 						<span class="material-icons">favorite_border</span>                	
@@ -162,7 +174,45 @@
 		</c:forEach>
 		<span class="material-icons" onclick="moveToAfter(${page},${pagingCnt},${param.record_cnt},'${searchText}')">navigate_next</span>
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
+		let beforeI_board = 0
+	
+		function makeLikeUser(one){
+			const img = one.profile_img = null ? 
+					'<img class="pImg" src="/img/default_profile.jpg">'
+					:
+					`<img class="pImg" src="/img/user/\${one.i_user}/\${one.profile_img}">`
+					
+			const ele = `<div class="likeItemContainer">
+					<div class="profileContainer">
+			<div class="profile">\${img}</div></div>
+				<div class="nm">\${one.nm}</div>
+			</div>`
+			return ele
+		}
+	
+		function getLikeList(i_board, cnt) {
+			likeListContainer.style.opacity = '1 '
+			likeListContainer.innerHTML = ""
+			if(cnt == 0){return}
+			//비동기로 /board/like에서 값을 받아온다.새로고침 없이
+			axios.get('/board/like',{
+				//키값하고 value 값 같으면 똑같이 적을 수 있음
+				params : {
+					i_board
+				}
+			}).then(function(res){
+				console.log(res)
+				if(res.data.length > 0){
+					for(let i = 0; i <res.data.length; i++){
+						const result = makeLikeUser(res.data[i])
+						likeListContainer.innerHTML += result
+					}	
+				}
+			})
+		}
+	
 		function moveToDetail(i_board, param, page,searchText, searchType) {
 			location.href = '/boardDetail?page='+page+'&record_cnt='+param+'&i_board='+i_board+'&searchText='+searchText
 							+'&searchType='+searchType

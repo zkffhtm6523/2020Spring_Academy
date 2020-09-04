@@ -33,7 +33,6 @@ public class BoardDAO {
 					String nm = rs.getNString("nm");
 					String profile_img = rs.getNString("profile_img");
 					int i_user = rs.getInt("i_user");
-					System.out.println("좋아요 한 사람 : "+profile_img);	
 					vo.setNm(nm);
 					vo.setProfile_img(profile_img);
 					vo.setI_user(i_user);
