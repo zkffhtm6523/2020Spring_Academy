@@ -12,11 +12,11 @@
 -> Spring은 pom.xml에 아래 내용을 붙여넣어 주면 됨
 <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 <pre>
-&lt;<dependency>
+&lt;<dependency>&lt;
     <groupId>com.google.code.gson</groupId>
     <artifactId>gson</artifactId>
     <version>2.8.6</version>
-&lt;</dependency>
+&lt;</dependency>&lt;
 </pre>
 
           
