@@ -11,10 +11,12 @@
 - 방법 2 : https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.6 -> jar 다운로드
 -> Spring은 pom.xml에 아래 내용을 붙여넣어 주면 됨
 <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+<pre>
 <dependency>
     <groupId>com.google.code.gson</groupId>
     <artifactId>gson</artifactId>
     <version>2.8.6</version>
 </dependency>
+</pre>
 
           
