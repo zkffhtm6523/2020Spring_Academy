@@ -5,3 +5,16 @@
 <h1>AJAX(비동기 통신)</h1>
 1. axios 라이브러리 다운 : https://github.com/axios/axios<br>
 2. Using jsDelivr CDN: <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+3. Gson(구글에서 만든 것)/Json(아파치에서 만든 것)
+- 방법 1 : Gson라이브러리 다운 : https://github.com/google/gson -> 다운로드
+- 방법 2 : https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.6 -> jar 다운로드
+-> Spring은 pom.xml에 아래 내용을 붙여넣어 주면 됨
+<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.6</version>
+</dependency>
+
+          
