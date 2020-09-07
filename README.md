@@ -15,3 +15,11 @@ FrameWork : 호출을 당함
 Library : 내가 호출을 함
 <br>
 4.  Ajax 방식 2개 : 쿼리스트링 or 자바스크립트 
+
+<h1>MariaDB</h1>
+1. DB 설치
+  (1). MariaDB : https://mariadb.org/download/
+  (2). MySQL : https://dev.mysql.com/downloads/mysql/
+2. 계정
+  (1). 계정은 최대한 root를 피하자
+  (2). 구글 mysql jdbc driver에 platform independent의 밑의 압축파일 받음->압축파일 풀어서 jar
