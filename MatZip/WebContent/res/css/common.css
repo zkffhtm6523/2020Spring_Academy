@@ -20,7 +20,8 @@ html, body{
 	align-items: center;	
 }
 
-#frm{
+.frm{
 	padding:15px;
 	border:1px solid #bdc3c7;
 }
+.msg { color: red; }

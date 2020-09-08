@@ -46,7 +46,7 @@ public class JdbcTemplate {
 			jdbc.prepared(ps);
 			
 			rs = ps.executeQuery();
-			result = jdbc.executeQuery(rs);
+			jdbc.executeQuery(rs);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

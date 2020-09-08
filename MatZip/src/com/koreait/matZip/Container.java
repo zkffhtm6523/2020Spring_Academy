@@ -1,6 +1,8 @@
 package com.koreait.matZip;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +30,28 @@ public class Container extends HttpServlet {
 		proc(request, response);
 	}
 	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//주소값.메소드
-		String temp = mapper.nav(request);
-		
-		if(temp.indexOf("/") >= 0 && "redirect:".equals(temp.substring(0, temp.indexOf("/")))) {
-				response.sendRedirect(temp.substring(temp.indexOf("/")));
+		//위에서 선언한 변수(주소값).메소드
+		String temp = mapper.nav(request);//보통 템플릿 파일명이 넘어온다
+		//handlermapping에서 ajax를 넘겨주면 여기서 처리할 로직
+		//405,404가 안넘어오는게 temp.indexOf("/") >= 0, "redirect:".equals("/"))하고 같지 않으니까 다음 밑에 request로 이동, 
+		if(temp.indexOf(":") >= 0){
+			String prefix = temp.substring(0, temp.indexOf(":"));
+			String value = temp.substring(temp.indexOf(":")+1);
+			
+			if("redirect".equals(prefix)) {
+				System.out.println("temp sub : "+temp.substring(0, temp.indexOf("/")));
+				//redirect : 이것이 붙은게 넘어올 때 여기로 가기 위한 것
+				response.sendRedirect(value);
 				return;
+			//ajax 처리 로직
+			}else if("ajax".equals(prefix)) {
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json");
+				//join.jsp의 result에 값이 들어간다
+				PrintWriter out = response.getWriter();
+				out.print(value);
+				return;
+			}
 		}
 		
 		switch (temp) {

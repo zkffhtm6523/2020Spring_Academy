@@ -21,4 +21,24 @@ public class UserService {
 		
 		return dao.join(param);
 	}
+	public int login(UserVO param) {
+		int result = 0;
+		
+		UserVO dbResult = dao.selUser(param);
+		
+		if(dbResult.getI_user() == 0) { // 아이디 없음
+			result = 2;
+		} else {
+			String salt = dbResult.getSalt();			
+			String encryptPw = SecurityUtils.getEncrypt(param.getUser_pw(), salt);
+			
+			if(encryptPw.equals(dbResult.getUser_pw())) {
+				result = 1;
+			} else {
+				result = 3;
+			}
+		}
+		
+		return result;
+	}
 }
