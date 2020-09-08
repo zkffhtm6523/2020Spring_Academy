@@ -15,7 +15,11 @@ public class HandlerMapper {
 	}
 	public String nav(HttpServletRequest request) throws ServletException, IOException {
 		String[] uriArr = request.getRequestURI().split("/");
-		
+		System.out.println("URI : "+request.getRequestURI());
+		for (int i = 0; i < uriArr.length; i++) {
+			System.out.println("uriArr["+i+"] : "+uriArr[i]);
+		}
+		System.out.println("uriArr.length : "+uriArr.length );
 		if(uriArr.length < 3) {return "405";}
 		
 		//1번방 기준이 localhost:8089/~/의 ~부분이 1번방

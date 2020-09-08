@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.koreait.matZip.db.DbManager;
 //"/"는 모두 얘가 잡고, res는 web.xml에서 staticcontainer로 "/"를 막아놨음
 @WebServlet("/")
 public class Container extends HttpServlet {

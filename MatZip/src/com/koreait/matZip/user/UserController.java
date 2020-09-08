@@ -7,8 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.koreait.matZip.Const;
 import com.koreait.matZip.ViewRef;
+import com.koreait.matZip.vo.UserVO;
 
 public class UserController {
+	
+	private UserService service;
+	
+	public UserController() {
+		service = new UserService();
+	}
 	//예를 들어 /user/login이면 여기로 오게 할 거임
 	public String login(HttpServletRequest request)throws ServletException, IOException {
 		//헤더하고 사이드 등 고정, 안의 컨텐츠만 바뀐다. 로그인 페이지는 템플릿 안 쓰겠다
@@ -27,6 +34,12 @@ public class UserController {
 		String user_pw = request.getParameter("user_pw");		
 		String nm = request.getParameter("nm");
 		
+		UserVO param = new UserVO();
+		param.setUser_id(user_id);
+		param.setUser_pw(user_pw);
+		param.setNm(nm);
+		
+		int result = service.join(param);
 		
 		return "redirect:/user/login";
 	}
