@@ -5,23 +5,23 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.koreait.matZip.restaurant.RestaurantController;
 import com.koreait.matZip.user.UserController;
 
 public class HandlerMapper {
 	private UserController userCon;
+	private RestaurantController restCon;
 	
 	public HandlerMapper() {
 		userCon = new UserController();
+		restCon = new RestaurantController();
 	}
+	
+	
 	public String nav(HttpServletRequest request) throws ServletException, IOException {
 		String[] uriArr = request.getRequestURI().split("/");
 		
 		System.out.println("URI : "+request.getRequestURI());
-		for (int i = 0; i < uriArr.length; i++) {
-			System.out.println("uriArr["+i+"] : "+uriArr[i]);
-		}
-		System.out.println("uriArr.length : "+uriArr.length );
-		
 		if(uriArr.length < 3) {return "405";}
 		//1번방 기준이 localhost:8089/~/의 ~부분이 1번방
 		
@@ -40,6 +40,14 @@ public class HandlerMapper {
 				return userCon.loginProc(request); 
 			case "ajaxIdchk":
 				return userCon.ajaxIdChk(request);
+			case "logout":
+				return userCon.logout(request);
+				
+			}
+		case ViewRef.URI_RESTAURANT :
+			switch (uriArr[2]) {
+			case "restMap":
+					return restCon.restMap(request);
 			}
 		}
 		return "404";

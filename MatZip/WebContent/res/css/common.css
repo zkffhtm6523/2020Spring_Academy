@@ -1,4 +1,10 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+
+*{
+	box-sizing: border-box;
+	font-family: 'Noto Sans KR', sans-serif;
+}
 
 html, body{
 	padding: 0;
@@ -6,10 +12,87 @@ html, body{
 	width: 100%;
 	height: 100%;
 }
+a{
+	color: black;
+	text-decoration: none;	
+}
+.ml5{margin-left: 5px;}
+.ml10{margin-left: 10px;}
+.ml15{margin-left: 15px;}
+.ml35{margin-left: 35px;}
 
 #container{
+	/*기본값이 start임 왼쪽 위 상단*/
+	display:flex;
+	flex-direction:column;
 	width: 100%;
 	height: 100%;
+}
+
+#container > header{
+	background-color:#a29bfe;
+	display:flex;
+	height: 70px;
+	padding:10px;
+}
+#container > header > #headerLeft{
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content:flex-end;
+}
+#container > header > #headerLeft > .logo{
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content:flex-start;
+	margin-left: 25px;
+	font-weight: bold;
+	
+}
+#container > header > #headerLeft > .logo > a{
+	font-size: 1.2em;
+}
+#container > header > #headerLeft > .containerPImg{
+	margin-left: 15px;
+}
+#container > header > #headerLeft > .containerPImg > .ml5{
+	display: inline-block;
+}
+#container > header > #headerLeft > .containerPImg > .ml15{
+	display: inline-block;
+}
+#container > header > #headerLeft > .ml15 > a{color:#E6241F;}
+#container > header > #headerLeft > .containerPImg > .pImg{
+	border-radius: 50%;
+	height: 30px;
+	width: 30px;
+}
+#container > header > #headerLeft > .containerPImg > .ml15 > a {
+	color: blue;
+}
+#container > header > #headerRight{
+	padding-right:20px;
+	display:flex;
+	justify-content:flex-end;
+	align-items:center;
+	flex-grow: 1;
+}
+#container > section{
+	/*남는 공간을 내가 다 차지한다*/
+	flex-grow: 1;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+#container > footer{
+	padding:10px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	color:white;
+	background-color: #636e72;
+	height: 50px;
 }
 
 #sectionContainerCenter{

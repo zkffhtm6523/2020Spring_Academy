@@ -30,8 +30,21 @@ public class Container extends HttpServlet {
 		proc(request, response);
 	}
 	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//로그인에 따른 접속 가능 여부 판단
+		//(로그인이 안 되어 있으면 접속할 수 있는 주소만 여기서 체크, 나머지 전부 로그인되어 있어야함)
+		//handler mapping에서 로그인이 되어있으면 들어갈 수 있도록 할 수 있지만
+		//그것은 절차지향 방식이고, 아래의 방식이 객체지향 방식
+		String routerCheckResult = LoginChkInterceptor.routerChk(request);
+		if(routerCheckResult != null) {
+			response.sendRedirect(routerCheckResult);
+			return;
+		}
 		//위에서 선언한 변수(주소값).메소드
-		String temp = mapper.nav(request);//보통 템플릿 파일명이 넘어온다
+		
+		String temp = mapper.nav(request);
+		//보통 템플릿 파일명이 넘어온다. mapping에서는 uri에서 /상태로 자른 값들
+		//기준으로 
+		
 		//handlermapping에서 ajax를 넘겨주면 여기서 처리할 로직
 		//405,404가 안넘어오는게 temp.indexOf("/") >= 0, "redirect:".equals("/"))하고 같지 않으니까 다음 밑에 request로 이동, 
 		if(temp.indexOf(":") >= 0){

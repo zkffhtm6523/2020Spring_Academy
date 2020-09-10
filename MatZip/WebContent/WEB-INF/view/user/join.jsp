@@ -21,8 +21,9 @@
 		function chkId() {
 			const user_id = frm.user_id.value
 			axios.get('/user/ajaxIdchk',{
+			//axios.post('user/ajaxIdChk',{'user_id'}).then)로 날려야됨
 				params: {
-					user_id
+					user_id // == 'user_id' : user_id
 				}
 			}).then(function(res){
 				console.log(res)

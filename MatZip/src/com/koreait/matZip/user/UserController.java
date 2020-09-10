@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.koreait.matZip.CommonUtils;
 import com.koreait.matZip.Const;
 import com.koreait.matZip.ViewRef;
 import com.koreait.matZip.vo.UserVO;
@@ -65,12 +67,23 @@ public class UserController {
 		param.setUser_pw(user_pw);
 		
 		int result = service.login(param);
+		//객체지향은 현실세계 반영, 하나하나의 객체
 		
-		if(result == 1) {
+		//클래스 = 멤버필드 + 멤버메소드 + 생성자
+		if(result == 1) { //로그인 성공
+			HttpSession hs = request.getSession();
+			hs.setAttribute(Const.LOGIN_USER, param);
+			
 			return "redirect:/restaurant/restMap";
 		}else {
 			return "redirect:/user/login?user_id="+user_id+"&error="+result;
 		}
+	}
+	public String logout(HttpServletRequest request)throws ServletException, IOException {
+		HttpSession hs = request.getSession();
+		hs.invalidate();
+		
+		return "redirect:/user/login";
 	}
 	
 	public String ajaxIdChk(HttpServletRequest request)throws ServletException, IOException {
