@@ -12,7 +12,7 @@
 	<div id="container">
 		<header>
 			<div id="headerLeft">
-				<div class="logo"><a href="#">MatZip</a></div> 
+				<div class="logo"><a href="/restaurant/restMap">MatZip</a></div> 
 				<div class="containerPImg">
 						<c:choose>
 							<c:when test="${loginUser.profile_img != null}">
@@ -27,8 +27,8 @@
 				<div class="ml15"><a href="/user/logout">로그아웃</a></div>
 		 	</div>
 		 	<div id="headerRight">
-		 		<a href="/restaurant/reg">등록</a>
-		 		<div class="ml35"><a href="/user/favorite">북마크</a></div>
+		 		<a href="/restaurant/restReg">등록</a>
+		 		<div class="ml35"><a href="/user/restFavorite">북마크</a></div>
 			</div>
 		 </header>
 		<section>

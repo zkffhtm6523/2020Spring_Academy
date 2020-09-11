@@ -30,7 +30,9 @@ a{
 }
 
 #container > header{
-	background-color:#a29bfe;
+	background-image: url("/res/img/bgImage.png");
+	background-size: 80px;
+	
 	display:flex;
 	height: 70px;
 	padding:10px;
@@ -52,6 +54,7 @@ a{
 }
 #container > header > #headerLeft > .logo > a{
 	font-size: 1.2em;
+	color: 
 }
 #container > header > #headerLeft > .containerPImg{
 	margin-left: 15px;
@@ -67,9 +70,6 @@ a{
 	border-radius: 50%;
 	height: 30px;
 	width: 30px;
-}
-#container > header > #headerLeft > .containerPImg > .ml15 > a {
-	color: blue;
 }
 #container > header > #headerRight{
 	padding-right:20px;
