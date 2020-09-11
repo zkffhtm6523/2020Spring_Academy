@@ -18,11 +18,11 @@ Library : 내가 호출을 함
 
 <h1>MariaDB</h1>
 1. DB 설치
-  (1). MariaDB : https://mariadb.org/download/
-  (2). MySQL : https://dev.mysql.com/downloads/mysql/
+  (1). MariaDB : https://mariadb.org/download/<br>
+  (2). MySQL : https://dev.mysql.com/downloads/mysql/<br>
 2. 계정
-  (1). 계정은 최대한 root를 피하자
-  (2). 구글 mysql jdbc driver에 platform independent의 밑의 압축파일 받음->압축파일 풀어서 jar
+  (1). 계정은 최대한 root를 피하자<br>
+  (2). 구글 mysql jdbc driver에 platform independent의 밑의 압축파일 받음->압축파일 풀어서 jar<br>
 
 
 <h1>MatZip</h1>
