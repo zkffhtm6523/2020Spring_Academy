@@ -18,8 +18,16 @@ Library : 내가 호출을 함
 
 <h1>MariaDB</h1>
 1. DB 설치
-  (1). MariaDB : https://mariadb.org/download/
-  (2). MySQL : https://dev.mysql.com/downloads/mysql/
+  (1). MariaDB : https://mariadb.org/download/<br>
+  (2). MySQL : https://dev.mysql.com/downloads/mysql/<br>
 2. 계정
-  (1). 계정은 최대한 root를 피하자
-  (2). 구글 mysql jdbc driver에 platform independent의 밑의 압축파일 받음->압축파일 풀어서 jar
+  (1). 계정은 최대한 root를 피하자<br>
+  (2). 구글 mysql jdbc driver에 platform independent의 밑의 압축파일 받음->압축파일 풀어서 jar<br>
+
+
+<h1>MatZip</h1>
+0. 컨셉 : 지도를 통해서 음식을 검색하면 식당이 나오게 할 것<br>
+1. 참고 사이트 : 망고 플레이트<br>
+2. API : 카카오 지도<br>
+3. OCI : 이미지를 분석해서 텍스트 추출<br>
+4. 메뉴 : 추천메뉴 제공 방식<br>
