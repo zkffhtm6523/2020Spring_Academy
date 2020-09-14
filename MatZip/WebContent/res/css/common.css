@@ -52,9 +52,9 @@ a{
 	font-weight: bold;
 	
 }
+header a{background: rgba(255,255,255,1); color: black;} 
 #container > header > #headerLeft > .logo > a{
 	font-size: 1.2em;
-	color: 
 }
 #container > header > #headerLeft > .containerPImg{
 	margin-left: 15px;

@@ -42,6 +42,7 @@ public class Container extends HttpServlet {
 		//위에서 선언한 변수(주소값).메소드
 		
 		String temp = mapper.nav(request);
+		System.out.println("temp : "+temp);
 		//보통 템플릿 파일명이 넘어온다. mapping에서는 uri에서 /상태로 자른 값들
 		//기준으로 
 		
@@ -50,7 +51,8 @@ public class Container extends HttpServlet {
 		if(temp.indexOf(":") >= 0){
 			String prefix = temp.substring(0, temp.indexOf(":"));
 			String value = temp.substring(temp.indexOf(":")+1);
-			
+			System.out.println("prefix : "+prefix);
+			System.out.println("value : "+value);
 			if("redirect".equals(prefix)) {
 				System.out.println("temp sub : "+temp.substring(0, temp.indexOf("/")));
 				//redirect : 이것이 붙은게 넘어올 때 여기로 가기 위한 것

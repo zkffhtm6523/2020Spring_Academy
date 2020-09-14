@@ -47,13 +47,17 @@ public class HandlerMapper {
 		case ViewRef.URI_RESTAURANT :
 			switch (uriArr[2]) {
 			case "restMap":
-					return restCon.restMap(request);
+				return restCon.restMap(request);
 			case "restReg":
 				return restCon.restReg(request);
 			case "restRegProc":
 				return restCon.restRegProc(request);
+			case "detail":
+				return restCon.restDetail(request);
 			case "ajaxGetList":
 				return restCon.ajaxGetList(request);
+			case "addRecMenus":
+				return restCon.addRecMenusProc(request);
 			}
 		}
 		return "404";
