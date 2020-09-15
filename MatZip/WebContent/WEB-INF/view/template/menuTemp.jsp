@@ -7,12 +7,15 @@
 <meta charset="UTF-8">
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
+<c:forEach items="${css}" var="item">
+	<link rel="stylesheet" type="text/css" href="/res/css/${item}.css">
+</c:forEach>
 </head>
 <body>
 	<div id="container">
 		<header>
 			<div id="headerLeft">
-				<div class="logo"><a href="/restaurant/restMap">MatZip</a></div> 
+				<div class="logo"><a href="/restaurant/restMap"><img alt="맛집" src="/res/img/matzip.logo.png"></a></div> 
 				<div class="containerPImg">
 						<c:choose>
 							<c:when test="${loginUser.profile_img != null}">
