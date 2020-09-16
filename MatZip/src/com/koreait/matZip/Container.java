@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 //"/"는 모두 얘가 잡고, res는 web.xml에서 staticcontainer로 "/"를 막아놨음
 @WebServlet("/")
+@MultipartConfig(
+		fileSizeThreshold = 10_485_760,
+		maxFileSize = 52_428_800,
+		maxRequestSize = 104_857_600
+)
 public class Container extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

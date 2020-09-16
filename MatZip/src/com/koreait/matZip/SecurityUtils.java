@@ -10,10 +10,13 @@ import javax.servlet.http.HttpSession;
 import com.koreait.matZip.vo.UserVO;
 
 public class SecurityUtils {
+	public static int getLoginUserPk(HttpServletRequest request) {
+		return getLoginUser(request).getI_user();
+	}
+	
 	public static String getEncrypt(String source, String salt) {
 		return getEncrypt(source, salt.getBytes());
 	}
-
 	public static String getEncrypt(String source, byte[] salt) {
 
 		String result = "";

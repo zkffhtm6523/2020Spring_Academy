@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 <div style="width: 100%; position: absolute; top: 0px;">
@@ -31,13 +32,25 @@
 	<div>
 		<c:if test="${loginUser.i_user == data.i_user}">
 			<div>
-				<button onclick="isDel()">삭제</button>
-				<form id="recFrm" action="/restaurant/addRecMenusProc" enctype="multipart/form-data" method="post">
-					<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
-					<input type="hidden" name="i_rest" value="${data.i_rest}">
-					<div id="recItem"></div>
-					<div><input type="submit" value="등록"></div>
-				</form>
+				<button onclick="isDel()" id="delete">매장 삭제</button>
+				<h2>- 추천 메뉴 -</h2>
+				<div>
+					<form id="recFrm" action="/restaurant/addRecMenusProc" enctype="multipart/form-data" method="post">
+						<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
+						<input type="hidden" name="i_rest" value="${data.i_rest}">
+						<div id="recItem"></div>
+						<div><input type="submit" value="등록"></div>
+					</form>
+				</div>
+				<h2>- 메뉴 -</h2>
+				<div>
+					<form id="menuFrm" action="/restaurant/addMenusProc" enctype="multipart/form-data" method="post">
+						<input type="hidden" name="i_rest" value="${data.i_rest}">
+						<!-- multiple 주면 이미지 여러개 선택 가능함 -->
+						<input type="file" name="menu_pic" multiple>
+						<div><input type="submit" value="등록"></div>
+					</form>
+				</div>
 			</div>
 		</c:if>
 		
@@ -64,6 +77,27 @@
 						<tr>
 							<th>카테고리</th>	
 							<td>${data.cd_category_nm}</td>
+						</tr>
+						<tr>
+							<th>메뉴</th>
+							<td>
+								<div class="menuList">
+								<c:if test="${fn:length(menuList) > 0}">
+									<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
+										<div class="menuItem">
+											<img src="/res/img/restaurant/${data.i_rest}/menu/${menuList[i].menu_pic}">
+										</div>
+									</c:forEach>
+								</c:if>
+									<c:if test="${fn:length(menuList) > 3}">
+										<div class="menuItem bg_black">
+											<div class="moreCnt">
+												+${fn:length(menuList) - 3}
+											</div>
+										</div>
+									</c:if>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -97,7 +131,7 @@
 		
 		function addRecMenu() {
 			var div = document.createElement('div')
-			
+			div.classList = 'addList'
 			var inputNm = document.createElement('input')
 			inputNm.setAttribute('type','text')
 			inputNm.setAttribute('name', 'menu_nm')

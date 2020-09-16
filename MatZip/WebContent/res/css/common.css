@@ -108,3 +108,7 @@ header a{background: rgba(255,255,255,1); color: black;}
 	border:1px solid #bdc3c7;
 }
 .msg { color: red; }
+
+.bg_black {
+	background-color: #000;
+}
