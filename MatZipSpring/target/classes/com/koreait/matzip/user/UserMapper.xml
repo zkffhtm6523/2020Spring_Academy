@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.matzip.user.UserMapper">
+	<!-- 여기에 맞는 쿼리문을 선택하자 -->
+	<!-- dao역할 객체를 알아서 만듬 -->
+		<!-- UserMapper에서 Alias에서 세팅을 주면 됨. -->
+	<insert id="insUser" parameterType="UserDTO">
+		INSERT INTO t_user
+		(user_id, user_pw, salt, nm)
+		VALUES
+		(#{user_id}, #{user_pw}, #{salt}, #{nm})
+	</insert>
+	
+	<select id="selUser" parameterType="UserDTO" resultType="UserDMI">
+		SELECT i_user, user_id, user_pw, salt, nm, profile_img, r_dt
+		FROM t_user
+		WHERE
+		 <if test="i_user > 0">i_user = #{i_user}</if>
+		 <if test="user_id != null and user_id != ''">user_id = #{user_id}</if>
+	</select>
+</mapper>
