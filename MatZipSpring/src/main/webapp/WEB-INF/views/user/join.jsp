@@ -21,17 +21,14 @@
 	<script type="text/javascript">
 		function chkId() {
 			const user_id = frm.user_id.value
-			axios.get('/user/ajaxIdchk',{
-			/*axios.post('user/ajaxIdChk',{'user_id'}).then)로 날려야됨*/
-				params: {
-					user_id // == 'user_id' : user_id
-				}
+			axios.post('/user/ajaxIdchk',{
+					'user_id' : user_id 
 			}).then(function(res){
 				console.log(res)
-				if(res.data.result == 2){
+				if(res.data == 2){
 					idChkResult.innerText = '사용할 수 있는 아이디입니다.'
 					alert('사용 가능합니다')
-				}else if(res.data.result == 3){
+				}else if(res.data == 3){
 					idChkResult.innerText = '이미 사용중입니다.'
 					alert('이미 사용중입니다.')
 				}

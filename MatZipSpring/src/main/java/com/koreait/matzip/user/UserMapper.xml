@@ -4,14 +4,14 @@
 	<!-- 여기에 맞는 쿼리문을 선택하자 -->
 	<!-- dao역할 객체를 알아서 만듬 -->
 		<!-- UserMapper에서 Alias에서 세팅을 주면 됨. -->
-	<insert id="insUser" parameterType="UserDTO">
+	<insert id="insUser" parameterType="UserPARAM">
 		INSERT INTO t_user
 		(user_id, user_pw, salt, nm)
 		VALUES
 		(#{user_id}, #{user_pw}, #{salt}, #{nm})
 	</insert>
 	
-	<select id="selUser" parameterType="UserDTO" resultType="UserDMI">
+	<select id="selUser" parameterType="UserPARAM" resultType="UserDMI">
 		SELECT i_user, user_id, user_pw, salt, nm, profile_img, r_dt
 		FROM t_user
 		WHERE

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div id="sectionContainerCenter">
 	<div>
-		<form id="frm" action="/restaurant/restRegProc" method="post" onsubmit="return chkFrm()">
+		<form id="frm" action="/rest/restReg" method="post" onsubmit="return chkFrm()">
 			<div><input type="text" name="nm" placeholder="가게명"></div>
 			<div>
 				<input type="text" name="addr" placeholder="주소" onkeyup="changeAddr()" style="width: 400px;">
@@ -15,10 +15,6 @@
 			<div>
 				카테고리 : 
 				<select name="cd_category">
-					<option value="0">---선택---</option>
-					<c:forEach items="${categoryList}" var="item">
-						<option value="${item.cd}">${item.val}</option>
-					</c:forEach>
 				</select>
 			</div>
 			<div><input type="submit" value="등록"></div>

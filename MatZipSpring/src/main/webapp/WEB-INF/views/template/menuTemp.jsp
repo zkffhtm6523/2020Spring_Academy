@@ -15,7 +15,7 @@
 	<div id="container">
 		<header>
 			<div id="headerLeft">
-				<div class="logo"><a href="/restaurant/restMap"><img alt="맛집" src="/res/img/matzip.logo.png"></a></div> 
+				<div class="logo"><a href="/rest/map"><img alt="맛집" src="/res/img/matzip.logo.png"></a></div> 
 				<div class="containerPImg">
 						<c:choose>
 							<c:when test="${loginUser.profile_img != null}">
@@ -30,12 +30,12 @@
 				<div class="ml15"><a href="/user/logout">로그아웃</a></div>
 		 	</div>
 		 	<div id="headerRight">
-		 		<a href="/restaurant/restReg">등록</a>
+		 		<a href="/rest/restReg">등록</a>
 		 		<div class="ml35"><a href="/user/restFavorite">북마크</a></div>
 			</div>
 		 </header>
 		<section>
-			<jsp:include page="/WEB-INF/view/${view}.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/${view}.jsp"></jsp:include>
 		</section>
 		<footer>
 			<span>회사 정보</span>
