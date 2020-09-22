@@ -59,4 +59,11 @@
 	<!-- 라이브러리 다운 받았기 때문에, namespaces에서 다운받을 수 있음 -->
 	<mybatis-spring:scan base-package="com.koreait.matzip"/>
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:bean class="com.koreait.matzip.LoginCheckInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

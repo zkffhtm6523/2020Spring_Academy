@@ -27,11 +27,21 @@
 						</c:choose>
 					</div>
 				<div class="ml15">${loginUser == null ? '손' : loginUser.nm}님 안녕하세요.</div>
-				<div class="ml15"><a href="/user/logout">로그아웃</a></div>
+				<c:if test="${loginUser == null}">
+					<div class="ml15" id="headerLogout"><a href="/user/login">로그인</a></div>
+				</c:if>
+				<c:if test="${loginUser != null}">
+					<div class="ml15"><a href="/user/logout">로그아웃</a></div>
+				</c:if>
 		 	</div>
 		 	<div id="headerRight">
-		 		<a href="/rest/restReg">등록</a>
-		 		<div class="ml35"><a href="/user/restFavorite">북마크</a></div>
+		 		<c:if test="${loginUser != null }">
+		 			<a class="ml15" href="/rest/restReg">등록</a>
+		 		</c:if>
+		 		<c:if test="${loginUser == null}">
+			 		<a class="ml15" href="#" onclick="moveToReg()">등록</a>
+		 		</c:if>
+		 		<div class="ml35"><a href="#">북마크</a></div>
 			</div>
 		 </header>
 		<section>
@@ -41,5 +51,11 @@
 			<span>회사 정보</span>
 		</footer>
 	</div>
+	<script type="text/javascript">
+		function moveToReg() {
+			alert('로그인이 필요합니다')
+			location.href = '/user/login'
+		}
+	</script>
 </body>
 </html>

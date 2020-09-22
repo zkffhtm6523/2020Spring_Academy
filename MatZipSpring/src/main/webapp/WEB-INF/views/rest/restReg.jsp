@@ -12,9 +12,14 @@
 			</div>
 			<input type="hidden" name="lat" value="0" readonly="readonly">
 			<input type="hidden" name="lng" value="0" readonly="readonly">
+			<input type="hidden" name="i_user" value="${loginUser.i_user }">
 			<div>
 				카테고리 : 
 				<select name="cd_category">
+					<option value="0">--선택--</option>
+					<c:forEach items="${categoryList}" var="item">
+						<option value="${item.cd}">${item.val}</option>
+					</c:forEach>
 				</select>
 			</div>
 			<div><input type="submit" value="등록"></div>

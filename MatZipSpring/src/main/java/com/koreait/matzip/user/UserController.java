@@ -24,7 +24,11 @@ public class UserController {
 	//이거 하나만 있으면 주소값 알아서 넣어준다
 	@Autowired
 	private UserService service;
-	
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String logout(HttpSession hs) {
+		hs.invalidate();
+		return "redirect:/";
+	}
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model , @RequestParam(value="err", required = false, defaultValue = "0") int err) {
 		
@@ -41,7 +45,7 @@ public class UserController {
 		
 		if(result == Const.SUCCESS) {
 			hs.setAttribute(Const.LOGIN_USER, param);
-			return "redirect:/rest/map"; 
+			return "redirect:/"; 
 		}
 		String msg = null;
 		if(result == Const.NO_ID) {

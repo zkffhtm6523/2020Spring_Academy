@@ -11,7 +11,7 @@
 		<div class="recMenuItem" id="recMenuItem_${item.seq}">
 			<div class="pic">
 				<c:if test="${item.menu_pic != null && item.menu_pic != ''}">
-					<img src="/res/img/restaurant/${data.i_rest}/${item.menu_pic}">
+					<img src="/res/img/restaurant/${param.i_rest}/${item.menu_pic}">
 				</c:if>
 			</div>
 			<div class="info">
@@ -35,16 +35,17 @@
 				<button onclick="isDel()" id="delete">매장 삭제</button>
 				<h2>- 추천 메뉴 -</h2>
 				<div>
-					<form id="recFrm" action="/restaurant/addRecMenusProc" enctype="multipart/form-data" method="post">
+					<form id="recFrm" action="/rest/addRecMenusProc" enctype="multipart/form-data" method="post">
 						<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
-						<input type="hidden" name="i_rest" value="${data.i_rest}">
+						<input type="hidden" name="i_rest" value="${param.i_rest}">
+						i_rest : ${param.i_rest}
 						<div id="recItem"></div>
 						<div><input type="submit" value="등록"></div>
 					</form>
 				</div>
 				<h2>- 메뉴 -</h2>
 				<div>
-					<form id="menuFrm" action="/restaurant/addMenusProc" enctype="multipart/form-data" method="post">
+					<form id="menuFrm" action="/rest/addMenusProc" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="i_rest" value="${data.i_rest}">
 						<!-- multiple 주면 이미지 여러개 선택 가능함 -->
 						<input type="file" name="menu_pic" multiple>
