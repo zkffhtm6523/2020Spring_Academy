@@ -11,7 +11,7 @@
 		<div class="recMenuItem" id="recMenuItem_${item.seq}">
 			<div class="pic">
 				<c:if test="${item.menu_pic != null && item.menu_pic != ''}">
-					<img src="/res/img/restaurant/${param.i_rest}/${item.menu_pic}">
+					<img src="/res/img/rest/${param.i_rest}/rec_menu/${item.menu_pic}">
 				</c:if>
 			</div>
 			<div class="info">
@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			<c:if test="${loginUser.i_user == data.i_user && item.menu_pic != null}">
-				<div class="delIconContainer" onclick="delRecMenu(${data.i_rest}, ${item.seq})">
+				<div class="delIconContainer" onclick="delRecMenu(${param.i_rest}, ${item.seq})">
 					<span class="material-icons"> close </span>
 				</div>
 			</c:if>
@@ -35,7 +35,7 @@
 				<button onclick="isDel()" id="delete">매장 삭제</button>
 				<h2>- 추천 메뉴 -</h2>
 				<div>
-					<form id="recFrm" action="/rest/addRecMenusProc" enctype="multipart/form-data" method="post">
+					<form id="recFrm" action="/rest/recMenus" enctype="multipart/form-data" method="post">
 						<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
 						<input type="hidden" name="i_rest" value="${param.i_rest}">
 						i_rest : ${param.i_rest}
@@ -63,11 +63,11 @@
 					</span> 
 				</div>
 				<div class="status branch_none">
-					<span class="cnt hit">${data.cntHits}</span>
-					<span class="cnt favorite">${data.cntFavorite}</span>
+					<span class="cnt hit">좋아요 : ${data.cntHits}</span>
+					<span class="cnt favorite">찜 : ${data.cntFavorite}</span>
 				</div>
 			</div>
-			<div>
+			<div id="detail-body">
 				<table>
 					<caption>레스토랑 상세 정보</caption>
 					<tbody>
@@ -86,7 +86,7 @@
 								<c:if test="${fn:length(menuList) > 0}">
 									<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
 										<div class="menuItem">
-											<img src="/res/img/restaurant/${data.i_rest}/menu/${menuList[i].menu_pic}">
+											<img src="/res/img/restaurant/${data.i_rest}/${menuList[i].menu_pic}">
 										</div>
 									</c:forEach>
 								</c:if>
@@ -112,20 +112,22 @@
 	
 		function isDel() {
 			if(confirm('삭제 하시겠습니까?')) {
-				location.href = "/restaurant/restDel?i_rest=${data.i_rest}" 
+				location.href = "/rest/del?i_rest=${param.i_rest}" 
 			}
 		}
 		function delRecMenu(i_rest, seq) {
-			axios.get('/restaurant/ajaxDelRecMenu',{
+			axios.get('/rest/ajaxDelRecMenu',{
 				params: {
 					i_rest, seq
 				}
 			}).then(function(res){
+				console.log(res)
 				if(res.data == 1){
 					//엘리먼트 삭제
 					var ele = document.querySelector('#recMenuItem_'+seq)
 					ele.remove()
 				}
+				alert('추천메뉴 삭제되었습니다.')
 				location.reload()
 			})
 		}
@@ -141,7 +143,7 @@
 			inputPrice.setAttribute('name', 'menu_price')
 			var inputPic = document.createElement('input')
 			inputPic.setAttribute('type','file')
-			inputPic.setAttribute('name', 'menu_pic_' + idx++)
+			inputPic.setAttribute('name', 'menu_pic')
 			
 			div.append('메뉴 : ')
 			div.append(inputNm)

@@ -20,7 +20,7 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter{
 		
 		if(uriArr[1].equals("res")) {return true;} 
 		if(uriArr.length < 3) {
-			response.sendRedirect("/user/login");
+			response.sendRedirect("/rest/map");
 			return false;
 		}
 		
@@ -39,7 +39,7 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter{
 			}
 		case ViewRef.URI_REST:
 			switch (uriArr[2]) {
-			case "restReg": 
+			case "reg": 
 				if(isLogout) {
 					response.sendRedirect("/user/login");
 					return false;

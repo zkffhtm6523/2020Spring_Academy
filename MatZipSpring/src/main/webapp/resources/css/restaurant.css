@@ -75,5 +75,13 @@ section{
 	align-items: center;
 }
 .restaurant-detail {
+	text-align: center;
 	padding: 5px 0 10px 0;
+}
+.restaurant-detail > #detail-body > table{
+	margin: 0 auto;
+	border: 1px solid black;
+}
+table, tr, th, td{
+	text-align: center;
 }

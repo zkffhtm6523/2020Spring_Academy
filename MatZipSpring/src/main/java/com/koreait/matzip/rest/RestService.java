@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.koreait.matzip.CommonUtils;
 import com.koreait.matzip.FileUtils;
@@ -19,7 +22,7 @@ import com.koreait.matzip.model.CommonMapper;
 import com.koreait.matzip.model.RestaurantRecommendMenuVO;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestPARAM;
-import com.koreait.matzip.rest.model.RestRecommendMenuVO;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -47,12 +50,89 @@ public class RestService {
 	RestDMI getRest(RestPARAM param) {
 		return mapper.getRest(param);
 	}
-	List<RestRecommendMenuVO> getRecommendMenuList(int i_rest){
-		return mapper.selRecommendMenuList(i_rest);
+	List<RestRecMenuVO> getRecommendMenuList(RestPARAM param){
+		return mapper.selRestRecMenus(param);
+	}
+	@Transactional
+	public void delRestTran(RestPARAM param) {
+		mapper.delRestRecMenu(param);
+		mapper.delRestMenu(param);
+		mapper.delRest(param);
+	}
+	public int delRest(RestPARAM param) {
+		return mapper.delRest(param);
+	}
+	public int delRestMenu(RestPARAM param) {
+		return mapper.delRestMenu(param);
+	}
+	public int delRestRecMenu(RestPARAM param) {
+		return mapper.delRestRecMenu(param);
+	}
+	public int ajaxDelRecMenu(RestPARAM param, String realPath) {
+		//파일 삭제
+		List<RestRecMenuVO> list = mapper.selRestRecMenus(param);
+		if(list.size() == 1) {
+			RestRecMenuVO item = list.get(0);
+			
+			if(item.getMenu_pic() !=null && !item.getMenu_pic().equals("")) {
+				File file = new File(realPath + item.getMenu_pic());
+				if(file.exists()) {
+					if(file.delete()) {
+						return mapper.delRestMenu(param);
+					}else {
+						return 0;
+					}
+				}
+			}
+		}
+		return mapper.delRest(param);
+	}
+	public int insRecMenus(MultipartHttpServletRequest mReq) {
+		int i_rest = Integer.parseInt(mReq.getParameter("i_rest"));
+		List<MultipartFile> fileList = mReq.getFiles("menu_pic");
+		String[] menuNmArr = mReq.getParameterValues("menu_nm");
+		String[] menuPriceArr = mReq.getParameterValues("menu_price");
+		
+		//서블릿 컨택스트의 객체가 넘어옴
+		String path = mReq.getServletContext().getRealPath("/resources/img/rest/" + i_rest + "/rec_menu/");
+		
+		List<RestRecMenuVO> list = new ArrayList<RestRecMenuVO>();
+		
+		for (int i = 0; i < menuNmArr.length; i++) {
+			RestRecMenuVO vo = new RestRecMenuVO();
+			list.add(vo);
+			
+			String menu_nm = menuNmArr[i];
+			int menu_price = CommonUtils.parseStringToInt(menuPriceArr[i]);
+			vo.setI_rest(i_rest);
+			vo.setMenu_nm(menu_nm);
+			vo.setMenu_price(menu_price);
+			
+			//각 파일 저장
+			MultipartFile mf = fileList.get(i);
+			
+			if(mf.isEmpty()) {continue;}
+			
+			String originFileNm = mf.getOriginalFilename();
+			String ext = FileUtils.getExt(originFileNm);
+			String saveFileNm = UUID.randomUUID()+ext;
+			
+			try {
+				mf.transferTo(new File(path + saveFileNm));
+				vo.setMenu_pic(saveFileNm);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		for (RestRecMenuVO vo : list) {
+			mapper.insRestRecMenu(vo);
+		}
+		return i_rest;
 	}
 	
 	int addRecMenus(HttpServletRequest request) {
-		String savePath = "/res/img/restaurant";
+		String savePath = "/resources/img/restaurant";
 		String tempPath = request.getServletContext().getRealPath(savePath + "/temp");	
 		FileUtils.makeFolder(tempPath);
 		
@@ -61,7 +141,7 @@ public class RestService {
 		int i_rest = 0;
 		String[] menu_nmArr = null;
 		String[] menu_priceArr = null;
-		List<RestRecommendMenuVO> list = null;
+		List<RestRecMenuVO> list = null;
 		try {
 			multi = new MultipartRequest(request, tempPath, maxFileSize, "UTF-8", new DefaultFileRenamePolicy());
 			
@@ -77,7 +157,7 @@ public class RestService {
 			list = new ArrayList();
 			
 			for(int i=0; i<menu_nmArr.length; i++) {
-				RestRecommendMenuVO vo = new RestRecommendMenuVO();
+				RestRecMenuVO vo = new RestRecMenuVO();
 				vo.setI_rest(i_rest);
 				vo.setMenu_nm(menu_nmArr[i]);
 				vo.setMenu_price(CommonUtils.parseStringToInt(menu_priceArr[i]));
@@ -110,7 +190,7 @@ public class RestService {
 				    oldFile.renameTo(newFile);	
 				    
 				    int idx = CommonUtils.parseStringToInt(key.substring(key.lastIndexOf("_") + 1));				    
-				    RestRecommendMenuVO vo = list.get(idx);
+				    RestRecMenuVO vo = list.get(idx);
 				    vo.setMenu_pic(saveFileNm);
 				}
 			}
@@ -119,8 +199,8 @@ public class RestService {
 		}
 		
 		if(list != null) {
-			for(RestRecommendMenuVO vo : list) {
-				mapper.insRecommendMenu(vo);
+			for(RestRecMenuVO vo : list) {
+				mapper.insRestRecMenu(vo);
 			}	
 		}
 		
