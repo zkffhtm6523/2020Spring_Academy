@@ -73,10 +73,15 @@
 			<mapping path="/**"/>
 			<beans:bean class="com.koreait.matzip.LoginCheckInterceptor"/>
 		</interceptor>
+		
+		<interceptor>
+			<mapping path="/rest/*"/>
+			<beans:bean class="com.koreait.matzip.RestInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="5242880"/>
+		<beans:property name="maxUploadSize" value="52428800"/>
 	</beans:bean>
 	
 </beans:beans>
