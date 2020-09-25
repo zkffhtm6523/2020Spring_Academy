@@ -23,6 +23,7 @@ import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestFile;
 import com.koreait.matzip.rest.model.RestPARAM;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 
 @Controller
 @RequestMapping("/rest") //matzip의 핸들러 매핑에 1차로 넣어주는 것
@@ -56,14 +57,10 @@ public class RestController {
 	}
 	@RequestMapping(value =  "/ajaxDelMenu",produces = "application/json; charset=utf8")
 	@ResponseBody
-	public int ajaxDelMenu(RestPARAM param, HttpSession hs) {
-		String path = "/resources/img/rest/" + param.getI_rest() + "/menu/";
-		String realPath = hs.getServletContext().getRealPath(path);
-		param.setI_user(SecurityUtils.getLoginUserPk(hs)); //로긴 유저pk담기
-		System.out.println("i_user : "+param.getI_user());
-		System.out.println("i_rest : "+param.getI_rest());
-		System.out.println("seq : "+param.getSeq());
-		return service.delRecMenu(param, realPath);
+	public int ajaxDelMenu(RestPARAM param) {
+		// i_rest, seq, menu_pic
+		System.out.println("ajaxDelMenu 왔음");
+		return service.delRestMenu(param);
 	}
 	
 	@RequestMapping(value = "/reg", method = RequestMethod.GET)
@@ -83,10 +80,17 @@ public class RestController {
 		}
 		return "redirect:/rest/map";
 	}
+	@RequestMapping("/ajaxSelMenuList")
+	@ResponseBody
+	public List<RestRecMenuVO> ajaxSelMenuList(RestPARAM param){
+		System.out.println("ajaxSelMenuList 왔음");
+		return service.selRestMenus(param);
+	}
+	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String restDetail(Model model, RestPARAM param) {
-		model.addAttribute("menuList", service.selRestMenus(param));
-		model.addAttribute("css", new String[] {"restaurant"});
+//		model.addAttribute("menuList", service.selRestMenus(param));
+		model.addAttribute("css", new String[] {"restaurant","swiper-bundle.min"});
 		model.addAttribute("data", service.getRest(param));
 		model.addAttribute("recommendMenuList", service.selRestRecMenu(param));
 		model.addAttribute(Const.TITLE, "상세페이지");

@@ -8,7 +8,7 @@
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
 <c:forEach items="${css}" var="item">
-	<link rel="stylesheet" type="text/css" href="/res/css/${item}.css">
+	<link rel="stylesheet" type="text/css" href="/res/css/${item}.css?dfdfdf=10">
 </c:forEach>
 </head>
 <body>

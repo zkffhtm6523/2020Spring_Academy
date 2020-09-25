@@ -79,6 +79,18 @@ public class RestService {
 	}
 
 	public int delRestMenu(RestPARAM param) {
+		System.out.println("menu_pic : "+param.getMenu_pic());
+		System.out.println("seq : "+param.getSeq());
+		if(param.getMenu_pic() != null && !"".equals(param.getMenu_pic())) {
+			String path = Const.realPath + "/resources/img/rest/"+param.getI_rest()+"/menu/";
+			System.out.println("path"+path);
+			if(FileUtils.delFile(path + param.getMenu_pic())) {
+				return mapper.delRestMenu(param);
+			} else {
+				return Const.FAIL;
+			}
+		}
+		//파일이 없더라도 DB 삭제가 되도록 해야함
 		return mapper.delRestMenu(param);
 	}
 

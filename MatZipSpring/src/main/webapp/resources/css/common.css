@@ -81,6 +81,7 @@ header a{background: rgba(255,255,255,1); color: black;}
 #container > section{
 	/*남는 공간을 내가 다 차지한다*/
 	flex-grow: 1;
+	overflow: auto;
 	display:flex;
 	align-items:center;
 	justify-content:center;
