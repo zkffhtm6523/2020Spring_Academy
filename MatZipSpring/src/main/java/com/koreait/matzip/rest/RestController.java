@@ -2,6 +2,7 @@ package com.koreait.matzip.rest;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -41,7 +42,9 @@ public class RestController {
 	@RequestMapping(value = "/ajaxGetList" ,produces = "application/json; charset=utf8")
 	@ResponseBody
 	//객체를 리턴해줄 때 responseBody를 하면 알아서 jackson 적용됨
-	public List<RestDMI> ajaxGetList(RestPARAM param) {
+	public List<RestDMI> ajaxGetList(RestPARAM param, HttpSession hs) {
+		int i_user = SecurityUtils.getLoginUserPk(hs);
+		param.setI_user(i_user);
 		return service.selRestList(param);
 	}
 	@RequestMapping(value =  "/ajaxDelRecMenu",produces = "application/json; charset=utf8")
@@ -88,11 +91,18 @@ public class RestController {
 	}
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String restDetail(Model model, RestPARAM param) {
+	public String restDetail(Model model, RestPARAM param, HttpServletRequest req) {
+		service.addHits(param, req);
+		
+		int i_user = SecurityUtils.getLoginUserPk(req);
+		param.setI_user(i_user);
+		
+		RestDMI data = service.getRest(param);
+		List<RestRecMenuVO> list = service.selRestRecMenu(param);
 //		model.addAttribute("menuList", service.selRestMenus(param));
 		model.addAttribute("css", new String[] {"restaurant","swiper-bundle.min"});
-		model.addAttribute("data", service.getRest(param));
-		model.addAttribute("recommendMenuList", service.selRestRecMenu(param));
+		model.addAttribute("data", data);
+		model.addAttribute("recommendMenuList", list);
 		model.addAttribute(Const.TITLE, "상세페이지");
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		return ViewRef.TEMP_MENU_TEMP;

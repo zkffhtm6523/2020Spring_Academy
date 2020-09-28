@@ -7,6 +7,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,25 @@ public class RestService {
 	
 	public List<RestRecMenuVO> selRestMenus(RestPARAM param){
 		return mapper.selRestMenus(param);
+	}
+	
+	public void addHits(RestPARAM param, HttpServletRequest req) {
+		String myIp = req.getRemoteAddr();
+		ServletContext ctx = req.getServletContext();
+		
+		int i_user = SecurityUtils.getLoginUserPk(req);
+		
+		String currentReadUser = (String)ctx.getAttribute(Const.CURRENT_REST_READ_IP+param.getI_rest());
+		//null이라면 처음 들어간 것
+		if(currentReadUser == null || !currentReadUser.equals(myIp)) {
+			System.out.println("조회수 등록 들어옴");
+			param.setI_user(i_user); // 내가 쓴 글이면 조회수 안 올라가게 쿼리문으로 막는다.
+			//조회수 올림 처리 할꺼임
+			System.out.println(param.getI_user());
+			System.out.println(param.getI_user());
+			mapper.updAddHits(param);
+			ctx.setAttribute(Const.CURRENT_REST_READ_IP+param.getI_rest(), myIp);
+		}
 	}
 	
 	// 알아서 json형태롤 바꿔서 리턴해준다

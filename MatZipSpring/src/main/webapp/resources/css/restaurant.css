@@ -102,6 +102,22 @@ section {
 	border: 1px solid black;
 }
 
+.restaurant-detail #detail-header .restaurant_title_wrap h1{
+	display: inline-block;
+	width: 140px;
+}
+.restaurant-detail #detail-header .restaurant_title_wrap #favorite{
+	vertical-align: top;
+	line-height: 79px;
+	cursor: pointer;
+	color: red;
+}
+.restaurant-detail #detail-header .restaurant_title_wrap #favorite:hover{
+	font-size: 1.7em;
+		
+}
+
+
 table, tr, th, td {
 	text-align: center;
 }

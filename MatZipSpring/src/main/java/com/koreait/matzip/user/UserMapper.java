@@ -9,7 +9,10 @@ import com.koreait.matzip.user.model.UserVO;
 //마이바티스 것 ->servlet-context의 맨 하단 mybatis는 mapper를 찾는 것
 @Mapper
 public interface UserMapper {
-	public int insUser(UserVO vo);
-	public UserDMI selUser(UserPARAM dto);
-	
+	int insUser(UserVO p);
+	int insFavorite(UserPARAM param);
+
+	UserDMI selUser(UserPARAM p);
+
+	int delFavorite(UserPARAM param);
 }
