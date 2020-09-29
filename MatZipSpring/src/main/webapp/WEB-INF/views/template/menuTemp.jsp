@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 <c:forEach items="${css}" var="item">
 	<link rel="stylesheet" type="text/css" href="/res/css/${item}.css?dfdfdf=10">
 </c:forEach>
@@ -41,7 +43,7 @@
 		 		<c:if test="${loginUser == null}">
 			 		<a class="ml15" href="#" onclick="moveToReg()">등록</a>
 		 		</c:if>
-		 		<div class="ml35"><a href="#">북마크</a></div>
+		 		<div class="ml35"><a href="/user/favorite">북마크</a></div>
 			</div>
 		 </header>
 		<section>
