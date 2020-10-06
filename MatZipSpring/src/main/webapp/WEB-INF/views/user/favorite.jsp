@@ -16,7 +16,7 @@
 				</div>
 				<div class="f-fav">
 					<span class="material-icons">favorite</span>
-				</div>
+				</div>11
 			</div>
 			<div class="bottom">
 				<c:forEach items="${item.menuList}" var="recMenu" varStatus="status">
