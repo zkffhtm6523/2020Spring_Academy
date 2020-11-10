@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -13,7 +15,7 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/res/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -23,6 +25,30 @@
 	
 	<context:component-scan base-package="com.koreait.apart" />
 	
+	<!-- 프로퍼티는 멤버필드에 세터로 때려박음 -->
+	<!--  커넥션 풀 제작 -->
+	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<beans:property name="poolName" value="springHikariCP"/>
+		<beans:property name="connectionTestQuery" value="SELECT 1 FROM DUAL"/>
+		<beans:property name="driverClassName" value="${db.driver}"/>
+		<!-- 기본값이 있어서 지워도 작동될 거 같음 -->
+		<beans:property name="maximumPoolSize" value="10"/>
+		<beans:property name="idleTimeout" value="5000"/>
+
+		<beans:property name="jdbcUrl" value="${db.url}"/>
+		<beans:property name="username" value="${db.username}"/>
+		<beans:property name="password" value="${db.password}"/>
+	</beans:bean>
 	
-	
+	<!-- 생성자에 넣음 -->
+	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<beans:constructor-arg ref="hikariConfig"/> <!-- 위의 CP를 여기에 넣어준다 -->
+	</beans:bean>
+	<!-- mybatis 세팅 , factory는 객체 생성 담당 -->
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"/>
+		<beans:property name="configLocation" value="/WEB-INF/spring/mybatis-alias.xml"/>
+	</beans:bean>
+	<!-- 라이브러리 다운 받았기 때문에, namespaces에서 다운받을 수 있음 -->
+	<mybatis-spring:scan base-package="com.koreait.apart"/>
 </beans:beans>
