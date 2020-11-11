@@ -8,5 +8,25 @@
 	
 	<select id="selApartmentInfoList" parameterType="SearchPARAM" resultType="ApartInfoVO">
 		SELECT * FROM apartment_info
+		WHERE deal_year = #{year}
+		AND deal_month = #{mon}
+		AND location_cd = ${locationCd}
 	</select>
+	
+	<!-- 양쪽 홑따옴표 없애고 싶을 때 $를 쓴다. 아니면 # -->
+	
+	<insert id="insApartmentInfo" parameterType="ItemDTO">
+		INSERT INTO apartment_info
+		(
+		deal_amount, build_year, deal_year, deal_month
+		, deal_day, dong, apartment_name, area_for_exclusive_use
+		, jibun, flr, location_cd
+		)
+		VALUES
+		(
+		${deal_amount}, #{build_year}, #{deal_year}, #{deal_month}
+		, #{deal_day}, #{dong}, #{apartment_name}, #{area_for_exclusive_use}
+		, #{jibun}, #{flr}, #{location_cd}
+		)
+	</insert>
 </mapper>
