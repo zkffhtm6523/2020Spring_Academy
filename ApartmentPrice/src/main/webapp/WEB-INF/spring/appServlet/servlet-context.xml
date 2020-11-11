@@ -48,7 +48,8 @@
 	<!-- mybatis 세팅 , factory는 객체 생성 담당 -->
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource"/>
-		<beans:property name="configLocation" value="/WEB-INF/spring/mybatis-alias.xml"/>
+		<beans:property name="typeAliasesPackage" value="com.koreait.apart.model"/>
+		<!-- <beans:property name="configLocation" value="/WEB-INF/spring/mybatis-alias.xml"/> -->
 	</beans:bean>
 	
 	<!-- 라이브러리 다운 받았기 때문에, namespaces에서 다운받을 수 있음 -->
