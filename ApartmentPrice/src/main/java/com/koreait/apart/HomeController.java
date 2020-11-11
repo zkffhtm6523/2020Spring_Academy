@@ -100,7 +100,7 @@ public class HomeController {
 		}
 		
 		System.out.println("result : "+respEntity.getBody());
-		
+		model.addAttribute("data", mapper.selApartmentInfoList(param));
 		return "result";
 	}
 }
