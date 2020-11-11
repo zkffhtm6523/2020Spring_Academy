@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.koreait.apart.model.ApartInfoVO;
 import com.koreait.apart.model.SearchPARAM;
@@ -54,6 +56,10 @@ public class HomeController {
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		
 		final HttpEntity<String> entity = new HttpEntity<String>(headers);
+		
+		UriComponents builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("LAWD_CD", lawd_cd)
+				
+				.queryParam("DEAL_YMD", deal_ym).queryParam("serviceKey", decodeServiceKey);
 		
 		return "result";
 	}
