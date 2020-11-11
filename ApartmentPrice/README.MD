@@ -32,3 +32,8 @@ CREATE TABLE apartment_info(
 	location_cd INT UNSIGNED NOT NULL
 );
 	
+## 습득 필요 정보
+cors : https://www.google.com/search?q=cors&oq=cors&aqs=chrome.0.0i433l2j0l6.1585j0j7&sourceid=chrome&ie=UTF-8 <br>
+내가 보낸 html이 아니면 막겠다는 의미_ajax는 막는데 서버끼리 통신은 cors가 안 걸림 <br>
+
+정부 공공 데이터 : https://www.data.go.kr/data/15057511/openapi.do <br>
